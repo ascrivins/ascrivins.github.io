@@ -6,7 +6,16 @@
     <description>Recent content on ascrivins blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 15 Apr 2021 15:20:51 -0400</lastBuildDate><atom:link href="https://ascrivins.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 16 Apr 2021 08:14:23 -0400</lastBuildDate><atom:link href="https://ascrivins.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[TryHackMe] &#39;Crack the hash&#39; - Walkthrough</title>
+      <link>https://ascrivins.github.io/posts/htm_crack_the_hash/</link>
+      <pubDate>Fri, 16 Apr 2021 08:14:23 -0400</pubDate>
+      
+      <guid>https://ascrivins.github.io/posts/htm_crack_the_hash/</guid>
+      <description>A complete, step-by-step walkthrough of the crack the hash room on TryHackMe</description>
+    </item>
+    
     <item>
       <title>Hello World!</title>
       <link>https://ascrivins.github.io/posts/first_post/</link>
@@ -15,6 +24,7 @@
       <guid>https://ascrivins.github.io/posts/first_post/</guid>
       <description>Blog created today to document some things that happen in my realm of cybersecurity.</description>
     </item>
+    
     
     
   </channel>
