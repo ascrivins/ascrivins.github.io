@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ascrivins blog</title>
+    <title>ascrivins:blog</title>
     <link>https://ascrivins.github.io/</link>
-    <description>Recent content on ascrivins blog</description>
+    <description>Recent content on ascrivins:blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 16 Apr 2021 08:14:23 -0400</lastBuildDate><atom:link href="https://ascrivins.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-gb</language>
+    <lastBuildDate>Sun, 18 Apr 2021 08:54:14 -0400</lastBuildDate><atom:link href="https://ascrivins.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>[TryHackMe] &#39;Crack the hash&#39; - Walkthrough</title>
-      <link>https://ascrivins.github.io/posts/htm_crack_the_hash/</link>
+      <title>[TryHackMe] Wgel CTF - Walkthrough</title>
+      <link>https://ascrivins.github.io/posts/tryhackme/wgel_ctf/</link>
+      <pubDate>Sun, 18 Apr 2021 08:54:14 -0400</pubDate>
+      
+      <guid>https://ascrivins.github.io/posts/tryhackme/wgel_ctf/</guid>
+      <description>How to exfiltrate the user and root flag.</description>
+    </item>
+    
+    <item>
+      <title>[TryHackMe] Crack the hash - Walkthrough</title>
+      <link>https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/</link>
       <pubDate>Fri, 16 Apr 2021 08:14:23 -0400</pubDate>
       
-      <guid>https://ascrivins.github.io/posts/htm_crack_the_hash/</guid>
+      <guid>https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/</guid>
       <description>A complete, step-by-step walkthrough of the crack the hash room on TryHackMe</description>
     </item>
     

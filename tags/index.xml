@@ -1,10 +1,74 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on ascrivins blog</title>
+    <title>Tags on ascrivins:blog</title>
     <link>https://ascrivins.github.io/tags/</link>
-    <description>Recent content in Tags on ascrivins blog</description>
+    <description>Recent content in Tags on ascrivins:blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://ascrivins.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-gb</language>
+    <lastBuildDate>Sun, 18 Apr 2021 08:54:14 -0400</lastBuildDate><atom:link href="https://ascrivins.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>dirbuster</title>
+      <link>https://ascrivins.github.io/tags/dirbuster/</link>
+      <pubDate>Sun, 18 Apr 2021 08:54:14 -0400</pubDate>
+      
+      <guid>https://ascrivins.github.io/tags/dirbuster/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nmap</title>
+      <link>https://ascrivins.github.io/tags/nmap/</link>
+      <pubDate>Sun, 18 Apr 2021 08:54:14 -0400</pubDate>
+      
+      <guid>https://ascrivins.github.io/tags/nmap/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Privilege Escalation</title>
+      <link>https://ascrivins.github.io/tags/privilege-escalation/</link>
+      <pubDate>Sun, 18 Apr 2021 08:54:14 -0400</pubDate>
+      
+      <guid>https://ascrivins.github.io/tags/privilege-escalation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ssh</title>
+      <link>https://ascrivins.github.io/tags/ssh/</link>
+      <pubDate>Sun, 18 Apr 2021 08:54:14 -0400</pubDate>
+      
+      <guid>https://ascrivins.github.io/tags/ssh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Walkthrough</title>
+      <link>https://ascrivins.github.io/tags/walkthrough/</link>
+      <pubDate>Sun, 18 Apr 2021 08:54:14 -0400</pubDate>
+      
+      <guid>https://ascrivins.github.io/tags/walkthrough/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hash Cracking</title>
+      <link>https://ascrivins.github.io/tags/hash-cracking/</link>
+      <pubDate>Fri, 16 Apr 2021 08:14:23 -0400</pubDate>
+      
+      <guid>https://ascrivins.github.io/tags/hash-cracking/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hashcat</title>
+      <link>https://ascrivins.github.io/tags/hashcat/</link>
+      <pubDate>Fri, 16 Apr 2021 08:14:23 -0400</pubDate>
+      
+      <guid>https://ascrivins.github.io/tags/hashcat/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

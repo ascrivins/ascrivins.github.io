@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Posts | ascrivins blog</title>
+<title>Posts | ascrivins:blog</title>
 <meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="">
@@ -95,10 +95,10 @@
     </style>
 </noscript>
 
-<header class="header">
+<header class="header" style="border-bottom-style: solid; border-bottom-color: #56773d;">
     <nav class="nav">
         <div class="logo">
-            <a href="https://ascrivins.github.io/" accesskey="h" title="ascrivins blog (Alt + H)">ascrivins blog</a>
+            <a href="https://ascrivins.github.io/" accesskey="h" title="ascrivins:blog (Alt + H)">ascrivins:blog</a>
             <span class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -120,6 +120,14 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
+
+		
+                <ul class="lang-switch">
+		    <li></li>
+                    <li>
+                        🇬🇧
+                    </li>
+                </ul>
             </span>
         </div>
         <ul id="menu" onscroll="menu_on_scroll()">
@@ -147,19 +155,35 @@
 </header>
 
 <article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="https://ascrivins.github.io/post_images/wgelCTF/banner.png" alt="">
+</figure>
   <header class="entry-header">
-    <h2>[TryHackMe] &#39;Crack the hash&#39; - Walkthrough</h2>
+    <h2>[TryHackMe] Wgel CTF - Walkthrough</h2>
   </header>
   <section class="entry-content">
-    <p>A Walkthrough of ‘Crack the hash’ from TryHackMe Link to room: https://tryhackme.com/room/crackthehash
+    <p>Intro Link to room: https://tryhackme.com/room/wgelctf
+ User Flag nmap Scan First thing to always do is to run an nmap scan and check out the results.
+&gt; nmap -sC -sV [ip] Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-18 09:13 EDT Nmap scan report for [ip] Host is up (0.039s latency). Not shown: 998 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.8 (Ubuntu Linux; protocol 2....</p>
+  </section>
+  <footer class="entry-footer">April 18, 2021&nbsp;·&nbsp;3 min&nbsp;·&nbsp;ascrivins</footer>
+  <a class="entry-link" aria-label="post link to [TryHackMe] Wgel CTF - Walkthrough" href="https://ascrivins.github.io/posts/tryhackme/wgel_ctf/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="https://ascrivins.github.io/post_images/crackthehash/banner.png" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>[TryHackMe] Crack the hash - Walkthrough</h2>
+  </header>
+  <section class="entry-content">
+    <p>Intro Link to room: https://tryhackme.com/room/crackthehash
  Note: Some of the hashes will take a long time to crack.
- Level 1 Hash 1: 48bb6e862e54f2a795ffc4e541caed4d This hash can be cracked by using a online tool to search through a database of cracked hashes.
-  Head to: https://hashes.com/en/decrypt/hash
-  Copy in the hash and press Submit.
-  This gives us the result and algorithm:...</p>
+  Level 1 Hash 1: 48bb6e862e54f2a795ffc4e541caed4d This hash can be cracked by using a online tool to search through a database of cracked hashes.
+ Head to: https://hashes.com/en/decrypt/hash Copy in the hash and press Submit. This gives us the result and algorithm:   48bb6e862e54f2a795ffc4e541caed4d:[Redacted]:MD5
+ Hash 2: CBFDAC6008F9CAB4083784CBD… This hash can be cracked by using a online tool to search through a database of cracked hashes....</p>
   </section>
   <footer class="entry-footer">April 16, 2021&nbsp;·&nbsp;4 min&nbsp;·&nbsp;ascrivins</footer>
-  <a class="entry-link" aria-label="post link to [TryHackMe] &#39;Crack the hash&#39; - Walkthrough" href="https://ascrivins.github.io/posts/htm_crack_the_hash/"></a>
+  <a class="entry-link" aria-label="post link to [TryHackMe] Crack the hash - Walkthrough" href="https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -174,11 +198,8 @@
 </article>
     </main>
     <footer class="footer">
-    <span>&copy; 2021 <a href="https://ascrivins.github.io/">ascrivins blog</a></span>
-    <span>&middot;</span>
-    <span>Powered by <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a></span>
-    <span>&middot;</span>
-    <span>Theme <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a></span>
+    <span>&copy; 2021 <a href="https://ascrivins.github.io/">ascrivins:blog</a> 🇬🇧 </span>
+    <span>
 </footer>
 <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
     <button class="top-link" id="top-link" type="button" accesskey="g">

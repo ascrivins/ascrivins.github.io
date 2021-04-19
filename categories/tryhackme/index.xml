@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on ascrivins:blog</title>
-    <link>https://ascrivins.github.io/posts/</link>
-    <description>Recent content in Posts on ascrivins:blog</description>
+    <title>TryHackMe on ascrivins:blog</title>
+    <link>https://ascrivins.github.io/categories/tryhackme/</link>
+    <description>Recent content in TryHackMe on ascrivins:blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Sun, 18 Apr 2021 08:54:14 -0400</lastBuildDate><atom:link href="https://ascrivins.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Apr 2021 08:54:14 -0400</lastBuildDate><atom:link href="https://ascrivins.github.io/categories/tryhackme/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[TryHackMe] Wgel CTF - Walkthrough</title>
       <link>https://ascrivins.github.io/posts/tryhackme/wgel_ctf/</link>
@@ -23,15 +23,6 @@
       
       <guid>https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/</guid>
       <description>A complete, step-by-step walkthrough of the crack the hash room on TryHackMe</description>
-    </item>
-    
-    <item>
-      <title>Hello World!</title>
-      <link>https://ascrivins.github.io/posts/first_post/</link>
-      <pubDate>Thu, 15 Apr 2021 15:20:51 -0400</pubDate>
-      
-      <guid>https://ascrivins.github.io/posts/first_post/</guid>
-      <description>Blog created today to document some things that happen in my realm of cybersecurity.</description>
     </item>
     
   </channel>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>[TryHackMe] Crack the hash - Walkthrough | ascrivins:blog</title>
+<meta name="keywords" content="Walkthrough, Hash Cracking, hashcat" />
+<meta name="description" content="A complete, step-by-step walkthrough of the crack the hash room on TryHackMe">
+<meta name="author" content="ascrivins">
+<link rel="canonical" href="https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.84cc6e7cd97516a4d4e877c6bebe5a4529afdf61f4d009e2c8bbec3a876fff4e.css" integrity="sha256-hMxufNl1FqTU6HfGvr5aRSmv32H00AniyLvsOodv/04=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ascrivins.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ascrivins.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ascrivins.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ascrivins.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ascrivins.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.82.0" />
+<meta property="og:title" content="[TryHackMe] Crack the hash - Walkthrough" />
+<meta property="og:description" content="A complete, step-by-step walkthrough of the crack the hash room on TryHackMe" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/" />
+<meta property="og:image" content="https://ascrivins.github.io/post_images/crackthehash/banner.png" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-16T08:14:23-04:00" />
+<meta property="article:modified_time" content="2021-04-16T08:14:23-04:00" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://ascrivins.github.io/post_images/crackthehash/banner.png" />
+<meta name="twitter:title" content="[TryHackMe] Crack the hash - Walkthrough"/>
+<meta name="twitter:description" content="A complete, step-by-step walkthrough of the crack the hash room on TryHackMe"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ascrivins.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "[TryHackMe] Crack the hash - Walkthrough",
+      "item": "https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "[TryHackMe] Crack the hash - Walkthrough",
+  "name": "[TryHackMe] Crack the hash - Walkthrough",
+  "description": "A complete, step-by-step walkthrough of the crack the hash room on TryHackMe",
+  "keywords": [
+    "Walkthrough", "Hash Cracking", "hashcat"
+  ],
+  "articleBody": "Intro Link to room: https://tryhackme.com/room/crackthehash\n Note: Some of the hashes will take a long time to crack.\n  Level 1 Hash 1: 48bb6e862e54f2a795ffc4e541caed4d This hash can be cracked by using a online tool to search through a database of cracked hashes.\n Head to: https://hashes.com/en/decrypt/hash Copy in the hash and press Submit. This gives us the result and algorithm:   48bb6e862e54f2a795ffc4e541caed4d:[Redacted]:MD5\n Hash 2: CBFDAC6008F9CAB4083784CBD… This hash can be cracked by using a online tool to search through a database of cracked hashes.\n Head to: https://hashes.com/en/decrypt/hash Copy in the hash and press Submit. This gives us the result and algorithm:   cbfdac6008f9cab4083784cbd1874f76618d2a97:[Redacted]:SHA1\n Hash 3: 1C8BFE8F801D79745C4631D09F… This hash can be cracked by using a online tool to search through a database of cracked hashes.\n Head to: https://hashes.com/en/decrypt/hash Copy in the hash and press Submit. This gives us the result and algorithm:   1c8bfe8f801d79745c4631d09fff36c82aa37fc4cce4fc946683d7b336b63032:[Redacted]:SHA256PLAIN\n Hash 4: $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUz… This is where it gets a little more tricky. Using the online tool doesn’t yield any results so we need to crack the hash.\nFirstly, we need to identify the algorithm. We can do this with the Hash Identifier tool on hashes.com.\nThis gives the result:\nPossible algorithms: bcrypt $2*$, Blowfish (Unix)  We can look up the hashcat mode for this algorithm here: https://hashcat.net/wiki/doku.php?id=example_hashes\nHashcat Mode #: 3200\nThen running this through Hashcat with the command:\nhashcat -a 3 -m 3200 blowfish.txt ?l?l?l?l  where:\n -a 3 is attack mode=3 which is brute force -m 3200 is the mode for Bycrpt Blowfish blowfish.txt is the file containing just the hash ?l?l?l?l specifies it’s a 4 letter word with char a-z  Gives result:\n$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom:[Redacted] Session..........: hashcat Status...........: Cracked Hash.Name........: bcrypt $2*$, Blowfish (Unix) Hash.Target......: $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX...8wsRom Time.Started.....: Sat Apr 17 06:46:13 2021 (1 min, 35 secs) Time.Estimated...: Sat Apr 17 06:47:48 2021 (0 secs) Guess.Mask.......: bl?l?l [4] Guess.Queue......: 1/1 (100.00%) Speed.#1.........: 6 H/s (9.64ms) @ Accel:2 Loops:64 Thr:1 Vec:8 Recovered........: 1/1 (100.00%) Digests Progress.........: 604/676 (89.35%) Rejected.........: 0/604 (0.00%) Restore.Point....: 600/676 (88.76%) Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:4032-4096 Candidates.#1....: bleh - bllz   Hash 5: 279412f945939ba78ce0758d3fd83daa Here we can return to using a online tool to search through a database of cracked hashes.\n Head to: https://hashes.com/en/decrypt/hash Copy in the hash and press Submit. This gives us the result and algorithm:   279412f945939ba78ce0758d3fd83daa:[Redacted]:900\n Level 2 Hash 6: F09EDCB1FCEFC6DFB23DC3505A882… This hash can be cracked by using a online tool to search through a database of cracked hashes.\n Head to: https://hashes.com/en/decrypt/hash Copy in the hash and press Submit. This gives us the result and algorithm:   f09edcb1fcefc6dfb23dc3505a882655ff77375ed8aa2d1c13f640fccc2d0c85:[Redacted]:SHA256PLAIN\n Hash 7: 1DFECA0C002AE40B8619ECF94… This hash can be cracked by using a online tool to search through a database of cracked hashes.\n Head to: https://hashes.com/en/decrypt/hash Copy in the hash and press Submit. This gives us the result and algorithm:   1dfeca0c002ae40b8619ecf94819cc1b:[Redacted]:NTLM\n Hash 8: $6$aReallyHardSalt$6WKUTqzq.U… Salt: aReallyHardSalt \u0026 Rounds: 5\nFirstly, we need to identify the algorithm. We can do this with the Hash Identifier tool on hashes.com.\nThis gives the result:\nPossible algorithms: sha512crypt $6$, SHA512 (Unix)  We can look up the hashcat mode for this algorithm here: https://hashcat.net/wiki/doku.php?id=example_hashes\nHashcat Mode #: 1800 - sha512crypt\nThen running this through Hashcat with the command:\nhashcat -m 1800 hash.hash wordlists/rockyou.txt  where:\n -m 1800 is the mode for sha512crypt hash.hash is the file containing just the hash wordlists/rockyou.txt is the dictionary to check against.  Gives result:\n$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.:[Redacted] Session..........: hashcat Status...........: Cracked Hash.Name........: sha512crypt $6$, SHA512 (Unix) Hash.Target......: $6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPM...ZAs02. Time.Started.....: Fri Apr 16 10:25:11 2021 (1 hour, 17 mins) Time.Estimated...: Fri Apr 16 11:42:52 2021 (0 secs) Guess.Base.......: File (wordlists/rockyou.txt) Guess.Queue......: 1/1 (100.00%) Speed.#1.........: 685 H/s (9.52ms) @ Accel:32 Loops:512 Thr:1 Vec:4 Recovered........: 1/1 (100.00%) Digests Progress.........: 2831936/14344385 (19.74%) Rejected.........: 0/2831936 (0.00%) Restore.Point....: 2831872/14344385 (19.74%) Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:4608-5000 Candidates.#1....: wakaguma - wak3Board   Hash 9: e5d8870e5bdd26602cab8dbe07a942… Salt: tryhackme\nFirstly, we need to identify the algorithm. We can do this with the Hash Identifier tool:\nThis gives the result:\n HASH: e5d8870e5bdd26602cab8dbe07a942c8669e56d6 Possible Hashs: [+] SHA-1 [+] MySQL5 - SHA-1(SHA-1($pass))  The hint tells us the algorithm is HMAC-SHA1 so the identifier is not being helpful here. Hashcat Mode #: 160 - HMAC-SHA1\n Note: The mode is not 110 as the other walkthroughs say. ;)\n Then running this through Hashcat with the command:\nhashcat -m 160 sha1.txt wordlists/rockyou.txt  where:\n -m 160 is the mode for HMAC-SHA1 hash.hash is the file containing: hash:salt wordlists/rockyou.txt is the dictionary to check against.  Gives Result:\ne5d8870e5bdd26602cab8dbe07a942c8669e56d6:tryhackme:[Redacted] Session..........: hashcat Status...........: Cracked Hash.Name........: HMAC-SHA1 (key = $salt) Hash.Target......: e5d8870e5bdd26602cab8dbe07a942c8669e56d6:tryhackme Time.Started.....: Fri Apr 16 10:19:57 2021 (7 secs) Time.Estimated...: Fri Apr 16 10:20:04 2021 (0 secs) Guess.Base.......: File (wordlists/rockyou.txt) Guess.Queue......: 1/1 (100.00%) Speed.#1.........: 1570.3 kH/s (0.82ms) @ Accel:1024 Loops:1 Thr:1 Vec:8 Recovered........: 1/1 (100.00%) Digests Progress.........: 12314624/14344385 (85.85%) Rejected.........: 0/12314624 (0.00%) Restore.Point....: 12312576/14344385 (85.84%) Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-1 Candidates.#1....: 48162450 - 481101133 ",
+  "wordCount" : "771",
+  "inLanguage": "en",
+  "image":"https://ascrivins.github.io/post_images/crackthehash/banner.png","datePublished": "2021-04-16T08:14:23-04:00",
+  "dateModified": "2021-04-16T08:14:23-04:00",
+  "author":{
+    "@type": "Person",
+    "name": "ascrivins"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ascrivins:blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ascrivins.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header" style="border-bottom-style: solid; border-bottom-color: #56773d;">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ascrivins.github.io/" accesskey="h" title="ascrivins:blog (Alt + H)">ascrivins:blog</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+
+		
+                <ul class="lang-switch">
+		    <li></li>
+                    <li>
+                        🇬🇧
+                    </li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu" onscroll="menu_on_scroll()">
+            <li>
+                <a href="https://ascrivins.github.io/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ascrivins.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ascrivins.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://ascrivins.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://ascrivins.github.io/posts/">Posts</a></div>
+    <h1 class="post-title">
+      [TryHackMe] Crack the hash - Walkthrough
+    </h1>
+    <div class="post-description">
+      A complete, step-by-step walkthrough of the crack the hash room on TryHackMe
+    </div>
+    <div class="post-meta">April 16, 2021&nbsp;·&nbsp;4 min&nbsp;·&nbsp;ascrivins
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="https://ascrivins.github.io/post_images/crackthehash/banner.png" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <div class="details">Table of Contents</div>
+        </summary>
+        <div class="inner"><ul>
+                <li>
+                    <a href="#intro" aria-label="Intro">Intro</a></li>
+                <li>
+                    <a href="#level-1" aria-label="Level 1">Level 1</a><ul>
+                        
+                <li>
+                    <a href="#hash-1-48bb6e862e54f2a795ffc4e541caed4d" aria-label="Hash 1: 48bb6e862e54f2a795ffc4e541caed4d">Hash 1: 48bb6e862e54f2a795ffc4e541caed4d</a></li>
+                <li>
+                    <a href="#hash-2-cbfdac6008f9cab4083784cbd" aria-label="Hash 2: CBFDAC6008F9CAB4083784CBD&amp;hellip;">Hash 2: CBFDAC6008F9CAB4083784CBD&hellip;</a></li>
+                <li>
+                    <a href="#hash-3-1c8bfe8f801d79745c4631d09f" aria-label="Hash 3: 1C8BFE8F801D79745C4631D09F&amp;hellip;">Hash 3: 1C8BFE8F801D79745C4631D09F&hellip;</a></li>
+                <li>
+                    <a href="#hash-4-2y12dwt1bzj6pcyc3dy1fwz5ieeuz" aria-label="Hash 4: $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUz&amp;hellip;">Hash 4: $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUz&hellip;</a></li>
+                <li>
+                    <a href="#hash-5-279412f945939ba78ce0758d3fd83daa" aria-label="Hash 5: 279412f945939ba78ce0758d3fd83daa">Hash 5: 279412f945939ba78ce0758d3fd83daa</a></li></ul>
+                </li>
+                <li>
+                    <a href="#level-2" aria-label="Level 2">Level 2</a><ul>
+                        
+                <li>
+                    <a href="#hash-6-f09edcb1fcefc6dfb23dc3505a882" aria-label="Hash 6: F09EDCB1FCEFC6DFB23DC3505A882&amp;hellip;">Hash 6: F09EDCB1FCEFC6DFB23DC3505A882&hellip;</a></li>
+                <li>
+                    <a href="#hash-7-1dfeca0c002ae40b8619ecf94" aria-label="Hash 7: 1DFECA0C002AE40B8619ECF94&amp;hellip;">Hash 7: 1DFECA0C002AE40B8619ECF94&hellip;</a></li>
+                <li>
+                    <a href="#hash-8-6areallyhardsalt6wkutqzqu" aria-label="Hash 8: $6$aReallyHardSalt$6WKUTqzq.U&amp;hellip;">Hash 8: $6$aReallyHardSalt$6WKUTqzq.U&hellip;</a></li>
+                <li>
+                    <a href="#hash-9-e5d8870e5bdd26602cab8dbe07a942" aria-label="Hash 9: e5d8870e5bdd26602cab8dbe07a942&amp;hellip;">Hash 9: e5d8870e5bdd26602cab8dbe07a942&hellip;</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="intro">Intro<a hidden class="anchor" aria-hidden="true" href="#intro">#</a></h1>
+<p>Link to room: <a href="https://tryhackme.com/room/crackthehash">https://tryhackme.com/room/crackthehash</a></p>
+<blockquote>
+<p><strong>Note:</strong> Some of the hashes will take a long time to crack.</p>
+</blockquote>
+<hr>
+<h1 id="level-1">Level 1<a hidden class="anchor" aria-hidden="true" href="#level-1">#</a></h1>
+<h2 id="hash-1-48bb6e862e54f2a795ffc4e541caed4d">Hash 1: 48bb6e862e54f2a795ffc4e541caed4d<a hidden class="anchor" aria-hidden="true" href="#hash-1-48bb6e862e54f2a795ffc4e541caed4d">#</a></h2>
+<p>This hash can be cracked by using a online tool to search through a database of cracked hashes.</p>
+<ol>
+<li>Head to: <a href="https://hashes.com/en/decrypt/hash">https://hashes.com/en/decrypt/hash</a></li>
+<li>Copy in the hash and press Submit.</li>
+<li>This gives us the result and algorithm:</li>
+</ol>
+<p><code>    48bb6e862e54f2a795ffc4e541caed4d:[Redacted]:MD5</code></p>
+<hr>
+<h2 id="hash-2-cbfdac6008f9cab4083784cbd">Hash 2: CBFDAC6008F9CAB4083784CBD&hellip;<a hidden class="anchor" aria-hidden="true" href="#hash-2-cbfdac6008f9cab4083784cbd">#</a></h2>
+<p>This hash can be cracked by using a online tool to search through a database of cracked hashes.</p>
+<ol>
+<li>Head to: <a href="https://hashes.com/en/decrypt/hash">https://hashes.com/en/decrypt/hash</a></li>
+<li>Copy in the hash and press Submit.</li>
+<li>This gives us the result and algorithm:</li>
+</ol>
+<p><code>   cbfdac6008f9cab4083784cbd1874f76618d2a97:[Redacted]:SHA1</code></p>
+<hr>
+<h2 id="hash-3-1c8bfe8f801d79745c4631d09f">Hash 3: 1C8BFE8F801D79745C4631D09F&hellip;<a hidden class="anchor" aria-hidden="true" href="#hash-3-1c8bfe8f801d79745c4631d09f">#</a></h2>
+<p>This hash can be cracked by using a online tool to search through a database of cracked hashes.</p>
+<ol>
+<li>Head to: <a href="https://hashes.com/en/decrypt/hash">https://hashes.com/en/decrypt/hash</a></li>
+<li>Copy in the hash and press Submit.</li>
+<li>This gives us the result and algorithm:</li>
+</ol>
+<p><code>   1c8bfe8f801d79745c4631d09fff36c82aa37fc4cce4fc946683d7b336b63032:[Redacted]:SHA256PLAIN</code></p>
+<hr>
+<h2 id="hash-4-2y12dwt1bzj6pcyc3dy1fwz5ieeuz">Hash 4: $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUz&hellip;<a hidden class="anchor" aria-hidden="true" href="#hash-4-2y12dwt1bzj6pcyc3dy1fwz5ieeuz">#</a></h2>
+<p>This is where it gets a little more tricky. Using the online tool doesn&rsquo;t yield any results so we need to crack the hash.</p>
+<p>Firstly, we need to identify the algorithm. We can do this with the Hash Identifier tool on hashes.com.</p>
+<p>This gives the result:</p>
+<pre><code>Possible algorithms: bcrypt $2*$, Blowfish (Unix)
+</code></pre>
+<p>We can look up the hashcat mode for this algorithm here: <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">https://hashcat.net/wiki/doku.php?id=example_hashes</a></p>
+<p>Hashcat Mode #: 3200</p>
+<p>Then running this through Hashcat with the command:</p>
+<pre><code>hashcat -a 3 -m 3200 blowfish.txt ?l?l?l?l
+</code></pre>
+<p>where:</p>
+<ul>
+<li>-a 3 is attack mode=3 which is brute force</li>
+<li>-m 3200 is the mode for Bycrpt Blowfish</li>
+<li>blowfish.txt is the file containing just the hash</li>
+<li>?l?l?l?l specifies it&rsquo;s a 4 letter word with char a-z</li>
+</ul>
+<p>Gives result:</p>
+<pre><code>$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom:[Redacted]
+                                                 
+Session..........: hashcat
+Status...........: Cracked
+Hash.Name........: bcrypt $2*$, Blowfish (Unix)
+Hash.Target......: $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX...8wsRom
+Time.Started.....: Sat Apr 17 06:46:13 2021 (1 min, 35 secs)
+Time.Estimated...: Sat Apr 17 06:47:48 2021 (0 secs)
+Guess.Mask.......: bl?l?l [4]
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:        6 H/s (9.64ms) @ Accel:2 Loops:64 Thr:1 Vec:8
+Recovered........: 1/1 (100.00%) Digests
+Progress.........: 604/676 (89.35%)
+Rejected.........: 0/604 (0.00%)
+Restore.Point....: 600/676 (88.76%)
+Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:4032-4096
+Candidates.#1....: bleh -&gt; bllz
+</code></pre>
+<hr>
+<h2 id="hash-5-279412f945939ba78ce0758d3fd83daa">Hash 5: 279412f945939ba78ce0758d3fd83daa<a hidden class="anchor" aria-hidden="true" href="#hash-5-279412f945939ba78ce0758d3fd83daa">#</a></h2>
+<p>Here we can return to using a online tool to search through a database of cracked hashes.</p>
+<ol>
+<li>Head to: <a href="https://hashes.com/en/decrypt/hash">https://hashes.com/en/decrypt/hash</a></li>
+<li>Copy in the hash and press Submit.</li>
+<li>This gives us the result and algorithm:</li>
+</ol>
+<p><code>  279412f945939ba78ce0758d3fd83daa:[Redacted]:900</code></p>
+<hr>
+<h1 id="level-2">Level 2<a hidden class="anchor" aria-hidden="true" href="#level-2">#</a></h1>
+<h2 id="hash-6-f09edcb1fcefc6dfb23dc3505a882">Hash 6: F09EDCB1FCEFC6DFB23DC3505A882&hellip;<a hidden class="anchor" aria-hidden="true" href="#hash-6-f09edcb1fcefc6dfb23dc3505a882">#</a></h2>
+<p>This hash can be cracked by using a online tool to search through a database of cracked hashes.</p>
+<ol>
+<li>Head to: <a href="https://hashes.com/en/decrypt/hash">https://hashes.com/en/decrypt/hash</a></li>
+<li>Copy in the hash and press Submit.</li>
+<li>This gives us the result and algorithm:</li>
+</ol>
+<p><code>  f09edcb1fcefc6dfb23dc3505a882655ff77375ed8aa2d1c13f640fccc2d0c85:[Redacted]:SHA256PLAIN</code></p>
+<hr>
+<h2 id="hash-7-1dfeca0c002ae40b8619ecf94">Hash 7: 1DFECA0C002AE40B8619ECF94&hellip;<a hidden class="anchor" aria-hidden="true" href="#hash-7-1dfeca0c002ae40b8619ecf94">#</a></h2>
+<p>This hash can be cracked by using a online tool to search through a database of cracked hashes.</p>
+<ol>
+<li>Head to: <a href="https://hashes.com/en/decrypt/hash">https://hashes.com/en/decrypt/hash</a></li>
+<li>Copy in the hash and press Submit.</li>
+<li>This gives us the result and algorithm:</li>
+</ol>
+<p><code>  1dfeca0c002ae40b8619ecf94819cc1b:[Redacted]:NTLM</code></p>
+<hr>
+<h2 id="hash-8-6areallyhardsalt6wkutqzqu">Hash 8: $6$aReallyHardSalt$6WKUTqzq.U&hellip;<a hidden class="anchor" aria-hidden="true" href="#hash-8-6areallyhardsalt6wkutqzqu">#</a></h2>
+<p>Salt: aReallyHardSalt &amp; Rounds: 5</p>
+<p>Firstly, we need to identify the algorithm. We can do this with the Hash Identifier tool on hashes.com.</p>
+<p>This gives the result:</p>
+<pre><code>Possible algorithms: sha512crypt $6$, SHA512 (Unix)
+</code></pre>
+<p>We can look up the hashcat mode for this algorithm here: <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">https://hashcat.net/wiki/doku.php?id=example_hashes</a></p>
+<p>Hashcat Mode #: 1800 - sha512crypt</p>
+<p>Then running this through Hashcat with the command:</p>
+<pre><code>hashcat -m 1800 hash.hash wordlists/rockyou.txt 
+</code></pre>
+<p>where:</p>
+<ul>
+<li>-m 1800 is the mode for sha512crypt</li>
+<li>hash.hash is the file containing just the hash</li>
+<li>wordlists/rockyou.txt is the dictionary to check against.</li>
+</ul>
+<p>Gives result:</p>
+<pre><code>$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.:[Redacted]
+                                                 
+Session..........: hashcat
+Status...........: Cracked
+Hash.Name........: sha512crypt $6$, SHA512 (Unix)
+Hash.Target......: $6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPM...ZAs02.
+Time.Started.....: Fri Apr 16 10:25:11 2021 (1 hour, 17 mins)
+Time.Estimated...: Fri Apr 16 11:42:52 2021 (0 secs)
+Guess.Base.......: File (wordlists/rockyou.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:      685 H/s (9.52ms) @ Accel:32 Loops:512 Thr:1 Vec:4
+Recovered........: 1/1 (100.00%) Digests
+Progress.........: 2831936/14344385 (19.74%)
+Rejected.........: 0/2831936 (0.00%)
+Restore.Point....: 2831872/14344385 (19.74%)
+Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:4608-5000
+Candidates.#1....: wakaguma -&gt; wak3Board
+</code></pre>
+<hr>
+<h2 id="hash-9-e5d8870e5bdd26602cab8dbe07a942">Hash 9: e5d8870e5bdd26602cab8dbe07a942&hellip;<a hidden class="anchor" aria-hidden="true" href="#hash-9-e5d8870e5bdd26602cab8dbe07a942">#</a></h2>
+<p>Salt: tryhackme</p>
+<p>Firstly, we need to identify the algorithm. We can do this with the Hash Identifier tool:</p>
+<p>This gives the result:</p>
+<pre><code> HASH: e5d8870e5bdd26602cab8dbe07a942c8669e56d6
+
+Possible Hashs:
+[+] SHA-1
+[+] MySQL5 - SHA-1(SHA-1($pass))
+</code></pre>
+<p>The hint tells us the algorithm is HMAC-SHA1 so the identifier is not being helpful here.
+Hashcat Mode #: 160 - HMAC-SHA1</p>
+<blockquote>
+<p><strong>Note:</strong> The mode is not 110 as the other walkthroughs say. ;)</p>
+</blockquote>
+<p>Then running this through Hashcat with the command:</p>
+<pre><code>hashcat -m 160 sha1.txt wordlists/rockyou.txt
+</code></pre>
+<p>where:</p>
+<ul>
+<li>-m 160 is the mode for HMAC-SHA1</li>
+<li>hash.hash is the file containing: hash:salt</li>
+<li>wordlists/rockyou.txt is the dictionary to check against.</li>
+</ul>
+<p>Gives Result:</p>
+<pre><code>e5d8870e5bdd26602cab8dbe07a942c8669e56d6:tryhackme:[Redacted]
+                                                 
+Session..........: hashcat
+Status...........: Cracked
+Hash.Name........: HMAC-SHA1 (key = $salt)
+Hash.Target......: e5d8870e5bdd26602cab8dbe07a942c8669e56d6:tryhackme
+Time.Started.....: Fri Apr 16 10:19:57 2021 (7 secs)
+Time.Estimated...: Fri Apr 16 10:20:04 2021 (0 secs)
+Guess.Base.......: File (wordlists/rockyou.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:  1570.3 kH/s (0.82ms) @ Accel:1024 Loops:1 Thr:1 Vec:8
+Recovered........: 1/1 (100.00%) Digests
+Progress.........: 12314624/14344385 (85.85%)
+Rejected.........: 0/12314624 (0.00%)
+Restore.Point....: 12312576/14344385 (85.84%)
+Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-1
+Candidates.#1....: 48162450 -&gt; 481101133</code></pre>
+
+</div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ascrivins.github.io/tags/walkthrough/">Walkthrough</a></li>
+      <li><a href="https://ascrivins.github.io/tags/hash-cracking/">Hash Cracking</a></li>
+      <li><a href="https://ascrivins.github.io/tags/hashcat/">hashcat</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://ascrivins.github.io/posts/tryhackme/wgel_ctf/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>[TryHackMe] Wgel CTF - Walkthrough</span>
+  </a>
+  <a class="next" href="https://ascrivins.github.io/posts/first_post/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>Hello World!</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="https://ascrivins.github.io/">ascrivins:blog</a> 🇬🇧 </span>
+    <span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    window.onload = function () {
+        if (localStorage.getItem("menu-scroll-position")) {
+            document.getElementById('menu').scrollLeft = localStorage.getItem("menu-scroll-position");
+        }
+    }
+
+    function menu_on_scroll() {
+        localStorage.setItem("menu-scroll-position", document.getElementById('menu').scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        container.appendChild(copybutton);
+    });
+</script>
+</body>
+
+</html>
