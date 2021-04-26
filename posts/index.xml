@@ -6,32 +6,14 @@
     <description>Recent content in Posts on ascrivins:blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Sun, 18 Apr 2021 08:54:14 -0400</lastBuildDate><atom:link href="https://ascrivins.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>[TryHackMe] Wgel CTF - Walkthrough</title>
-      <link>https://ascrivins.github.io/posts/tryhackme/wgel_ctf/</link>
-      <pubDate>Sun, 18 Apr 2021 08:54:14 -0400</pubDate>
-      
-      <guid>https://ascrivins.github.io/posts/tryhackme/wgel_ctf/</guid>
-      <description>How to exfiltrate the user and root flag.</description>
-    </item>
-    
-    <item>
-      <title>[TryHackMe] Crack the hash - Walkthrough</title>
-      <link>https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/</link>
-      <pubDate>Fri, 16 Apr 2021 08:14:23 -0400</pubDate>
-      
-      <guid>https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/</guid>
-      <description>A complete, step-by-step walkthrough of the crack the hash room on TryHackMe</description>
-    </item>
-    
+    <lastBuildDate>Mon, 26 Apr 2021 20:44:53 +0100</lastBuildDate><atom:link href="https://ascrivins.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hello World!</title>
       <link>https://ascrivins.github.io/posts/first_post/</link>
       <pubDate>Thu, 15 Apr 2021 15:20:51 -0400</pubDate>
       
       <guid>https://ascrivins.github.io/posts/first_post/</guid>
-      <description>Blog created today to document some things that happen in my realm of cybersecurity.</description>
+      <description>Blog created today to document some things that happen in my realm of Cybersecurity.</description>
     </item>
     
   </channel>

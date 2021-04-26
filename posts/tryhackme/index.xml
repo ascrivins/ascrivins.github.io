@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>TryHackMe on ascrivins:blog</title>
+    <link>https://ascrivins.github.io/posts/tryhackme/</link>
+    <description>Recent content in TryHackMe on ascrivins:blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Mon, 26 Apr 2021 20:44:53 +0100</lastBuildDate><atom:link href="https://ascrivins.github.io/posts/tryhackme/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[TryHackMe] Inclusion - Walkthrough</title>
+      <link>https://ascrivins.github.io/posts/tryhackme/inclusion/</link>
+      <pubDate>Mon, 26 Apr 2021 20:44:53 +0100</pubDate>
+      
+      <guid>https://ascrivins.github.io/posts/tryhackme/inclusion/</guid>
+      <description>Walkthrough and explanation of the Local File Inclusion vulnerability.</description>
+    </item>
+    
+    <item>
+      <title>[TryHackMe] LazyAdmin - Writeup</title>
+      <link>https://ascrivins.github.io/posts/tryhackme/lazyadmin/</link>
+      <pubDate>Sun, 25 Apr 2021 15:54:08 +0100</pubDate>
+      
+      <guid>https://ascrivins.github.io/posts/tryhackme/lazyadmin/</guid>
+      <description>A writeup of everything found on LazyAdmin.</description>
+    </item>
+    
+    <item>
+      <title>[TryHackMe] Wgel CTF - Walkthrough</title>
+      <link>https://ascrivins.github.io/posts/tryhackme/wgel_ctf/</link>
+      <pubDate>Sun, 18 Apr 2021 08:54:14 -0400</pubDate>
+      
+      <guid>https://ascrivins.github.io/posts/tryhackme/wgel_ctf/</guid>
+      <description>How to exfiltrate the user and root flag.</description>
+    </item>
+    
+    <item>
+      <title>[TryHackMe] Crack the hash - Walkthrough</title>
+      <link>https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/</link>
+      <pubDate>Fri, 16 Apr 2021 08:14:23 -0400</pubDate>
+      
+      <guid>https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/</guid>
+      <description>A complete, step-by-step walkthrough of the crack the hash room on TryHackMe</description>
+    </item>
+    
+  </channel>
+</rss>

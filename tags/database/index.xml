@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Database on ascrivins:blog</title>
+    <link>https://ascrivins.github.io/tags/database/</link>
+    <description>Recent content in Database on ascrivins:blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Sun, 25 Apr 2021 15:54:08 +0100</lastBuildDate><atom:link href="https://ascrivins.github.io/tags/database/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[TryHackMe] LazyAdmin - Writeup</title>
+      <link>https://ascrivins.github.io/posts/tryhackme/lazyadmin/</link>
+      <pubDate>Sun, 25 Apr 2021 15:54:08 +0100</pubDate>
+      
+      <guid>https://ascrivins.github.io/posts/tryhackme/lazyadmin/</guid>
+      <description>A writeup of everything found on LazyAdmin.</description>
+    </item>
+    
+  </channel>
+</rss>

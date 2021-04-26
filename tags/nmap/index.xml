@@ -6,7 +6,25 @@
     <description>Recent content in nmap on ascrivins:blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Sun, 18 Apr 2021 08:54:14 -0400</lastBuildDate><atom:link href="https://ascrivins.github.io/tags/nmap/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 26 Apr 2021 20:44:53 +0100</lastBuildDate><atom:link href="https://ascrivins.github.io/tags/nmap/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[TryHackMe] Inclusion - Walkthrough</title>
+      <link>https://ascrivins.github.io/posts/tryhackme/inclusion/</link>
+      <pubDate>Mon, 26 Apr 2021 20:44:53 +0100</pubDate>
+      
+      <guid>https://ascrivins.github.io/posts/tryhackme/inclusion/</guid>
+      <description>Walkthrough and explanation of the Local File Inclusion vulnerability.</description>
+    </item>
+    
+    <item>
+      <title>[TryHackMe] LazyAdmin - Writeup</title>
+      <link>https://ascrivins.github.io/posts/tryhackme/lazyadmin/</link>
+      <pubDate>Sun, 25 Apr 2021 15:54:08 +0100</pubDate>
+      
+      <guid>https://ascrivins.github.io/posts/tryhackme/lazyadmin/</guid>
+      <description>A writeup of everything found on LazyAdmin.</description>
+    </item>
+    
     <item>
       <title>[TryHackMe] Wgel CTF - Walkthrough</title>
       <link>https://ascrivins.github.io/posts/tryhackme/wgel_ctf/</link>

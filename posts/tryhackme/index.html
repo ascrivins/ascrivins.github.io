@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>TryHackMe | ascrivins:blog</title>
+<meta name="keywords" content="" />
+<meta name="description" content="Walkthroughs and Writeups of Hacktivities from TryHackMe.">
+<meta name="author" content="">
+<link rel="canonical" href="https://ascrivins.github.io/posts/tryhackme/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.bc435bed1061be2618667408894ae8a5d27c970831ce57f287e42f911918fcbc.css" integrity="sha256-vENb7RBhviYYZnQIiUropdJ8lwgxzlfyh&#43;QvkRkY/Lw=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://ascrivins.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ascrivins.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ascrivins.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ascrivins.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ascrivins.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.82.1" />
+<link rel="alternate" type="application/rss&#43;xml" href="https://ascrivins.github.io/posts/tryhackme/index.xml">
+<meta property="og:title" content="TryHackMe" />
+<meta property="og:description" content="Walkthroughs and Writeups of Hacktivities from TryHackMe." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ascrivins.github.io/posts/tryhackme/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TryHackMe"/>
+<meta name="twitter:description" content="Walkthroughs and Writeups of Hacktivities from TryHackMe."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ascrivins.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "TryHackMe",
+      "item": "https://ascrivins.github.io/posts/tryhackme/"
+    }
+  ]
+}
+</script>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header" style="border-bottom-style: solid; border-bottom-color: #56773d;">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ascrivins.github.io/" accesskey="h" title="ascrivins:blog (Alt + H)">ascrivins:blog</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu" onscroll="menu_on_scroll()">
+            <li>
+                <a href="https://ascrivins.github.io/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ascrivins.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ascrivins.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://ascrivins.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://ascrivins.github.io/posts/">Posts</a></div>
+  <h1>TryHackMe</h1>
+  <div class="post-description">
+    Walkthroughs and Writeups of Hacktivities from TryHackMe.
+  </div>
+</header>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="https://ascrivins.github.io/post_images/inclusion/banner.png" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>[TryHackMe] Inclusion - Walkthrough</h2>
+  </header>
+  <section class="entry-content">
+    <p>Intro A walkthrough of the room Inclusion from TryHackMe.
+Link to Room: https://tryhackme.com/room/inclusion
+ Reconnaissance Scanning The first thing to do with an IP is perform an nmap scan to see the open ports and services running on the machine.
+└─$ nmap -sC -sV [ip] Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-26 20:07 BST Nmap scan report for [ip] Host is up (0.053s latency). Not shown: 998 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7....</p>
+  </section>
+  <footer class="entry-footer">April 26, 2021&nbsp;·&nbsp;3 min&nbsp;·&nbsp;ascrivins</footer>
+  <a class="entry-link" aria-label="post link to [TryHackMe] Inclusion - Walkthrough" href="https://ascrivins.github.io/posts/tryhackme/inclusion/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="https://ascrivins.github.io/post_images/lazyadmin/banner.png" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>[TryHackMe] LazyAdmin - Writeup</h2>
+  </header>
+  <section class="entry-content">
+    <p>Intro Writeup of everything found and exploited in Lazy Admin.
+The room information says: “Have some fun! There might be multiple ways to get user access.” So this is a writeup of everything I discovered.
+Link to room: https://tryhackme.com/room/lazyadmin
+ Reconnaissance Scanning An nmap scan of the IP revealed the following information:
+└─$ nmap -sC -sV [ip] Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-25 14:51 BST Nmap scan report for [ip] Host is up (0....</p>
+  </section>
+  <footer class="entry-footer">April 25, 2021&nbsp;·&nbsp;5 min&nbsp;·&nbsp;ascrivins</footer>
+  <a class="entry-link" aria-label="post link to [TryHackMe] LazyAdmin - Writeup" href="https://ascrivins.github.io/posts/tryhackme/lazyadmin/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="https://ascrivins.github.io/post_images/wgelCTF/banner.png" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>[TryHackMe] Wgel CTF - Walkthrough</h2>
+  </header>
+  <section class="entry-content">
+    <p>Intro Link to room: https://tryhackme.com/room/wgelctf
+ User Flag nmap Scan First thing to always do is to run an nmap scan and check out the results.
+&gt; nmap -sC -sV [ip] Starting Nmap 7.91 ( https://nmap.org ) at 2021-04-18 09:13 EDT Nmap scan report for [ip] Host is up (0.039s latency). Not shown: 998 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.8 (Ubuntu Linux; protocol 2....</p>
+  </section>
+  <footer class="entry-footer">April 18, 2021&nbsp;·&nbsp;3 min&nbsp;·&nbsp;ascrivins</footer>
+  <a class="entry-link" aria-label="post link to [TryHackMe] Wgel CTF - Walkthrough" href="https://ascrivins.github.io/posts/tryhackme/wgel_ctf/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="https://ascrivins.github.io/post_images/crackthehash/banner.png" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>[TryHackMe] Crack the hash - Walkthrough</h2>
+  </header>
+  <section class="entry-content">
+    <p>Intro Link to room: https://tryhackme.com/room/crackthehash
+ Note: Some of the hashes will take a long time to crack.
+  Level 1 Hash 1: 48bb6e862e54f2a795ffc4e541caed4d This hash can be cracked by using a online tool to search through a database of cracked hashes.
+ Head to: https://hashes.com/en/decrypt/hash Copy in the hash and press Submit. This gives us the result and algorithm:   48bb6e862e54f2a795ffc4e541caed4d:[Redacted]:MD5
+ Hash 2: CBFDAC6008F9CAB4083784CBD… This hash can be cracked by using a online tool to search through a database of cracked hashes....</p>
+  </section>
+  <footer class="entry-footer">April 16, 2021&nbsp;·&nbsp;4 min&nbsp;·&nbsp;ascrivins</footer>
+  <a class="entry-link" aria-label="post link to [TryHackMe] Crack the hash - Walkthrough" href="https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/"></a>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="https://ascrivins.github.io/">ascrivins:blog</a></span>
+    <span>&middot;</span>
+    <span>🇬🇧</span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    window.onload = function () {
+        if (localStorage.getItem("menu-scroll-position")) {
+            document.getElementById('menu').scrollLeft = localStorage.getItem("menu-scroll-position");
+        }
+    }
+
+    function menu_on_scroll() {
+        localStorage.setItem("menu-scroll-position", document.getElementById('menu').scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

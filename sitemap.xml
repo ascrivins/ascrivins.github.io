@@ -2,37 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://ascrivins.github.io/posts/tryhackme/wgel_ctf/</loc>
-    <lastmod>2021-04-18T08:54:14-04:00</lastmod>
+    <loc>https://ascrivins.github.io/posts/tryhackme/inclusion/</loc>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/</loc>
-    <lastmod>2021-04-18T08:54:14-04:00</lastmod>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/categories/</loc>
-    <lastmod>2021-04-18T08:54:14-04:00</lastmod>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
   </url><url>
-    <loc>https://ascrivins.github.io/tags/dirbuster/</loc>
-    <lastmod>2021-04-18T08:54:14-04:00</lastmod>
+    <loc>https://ascrivins.github.io/tags/local-file-inclusion/</loc>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/tags/nmap/</loc>
-    <lastmod>2021-04-18T08:54:14-04:00</lastmod>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/posts/</loc>
-    <lastmod>2021-04-18T08:54:14-04:00</lastmod>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/tags/privilege-escalation/</loc>
-    <lastmod>2021-04-18T08:54:14-04:00</lastmod>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/tags/ssh/</loc>
-    <lastmod>2021-04-18T08:54:14-04:00</lastmod>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/tags/</loc>
-    <lastmod>2021-04-18T08:54:14-04:00</lastmod>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/categories/tryhackme/</loc>
-    <lastmod>2021-04-18T08:54:14-04:00</lastmod>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/posts/tryhackme/</loc>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/tags/walkthrough/</loc>
+    <lastmod>2021-04-26T20:44:53+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/posts/tryhackme/lazyadmin/</loc>
+    <lastmod>2021-04-25T15:54:08+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/tags/database/</loc>
+    <lastmod>2021-04-25T15:54:08+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/tags/dirbuster/</loc>
+    <lastmod>2021-04-25T15:54:08+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/tags/reverse-shell/</loc>
+    <lastmod>2021-04-25T15:54:08+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/tags/writeup/</loc>
+    <lastmod>2021-04-25T15:54:08+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/posts/tryhackme/wgel_ctf/</loc>
     <lastmod>2021-04-18T08:54:14-04:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/posts/tryhackme/htm_crack_the_hash/</loc>
@@ -43,6 +64,9 @@
   </url><url>
     <loc>https://ascrivins.github.io/tags/hashcat/</loc>
     <lastmod>2021-04-16T08:14:23-04:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/categories/general/</loc>
+    <lastmod>2021-04-15T15:20:51-04:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/posts/first_post/</loc>
     <lastmod>2021-04-15T15:20:51-04:00</lastmod>
