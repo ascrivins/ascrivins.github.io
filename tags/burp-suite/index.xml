@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Burp Suite on ascrivins:blog</title>
+    <link>https://ascrivins.github.io/tags/burp-suite/</link>
+    <description>Recent content in Burp Suite on ascrivins:blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Tue, 27 Apr 2021 20:29:11 +0100</lastBuildDate><atom:link href="https://ascrivins.github.io/tags/burp-suite/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[TryHackMe] Simple CTF - Walkthrough</title>
+      <link>https://ascrivins.github.io/posts/tryhackme/simplectf/</link>
+      <pubDate>Tue, 27 Apr 2021 20:29:11 +0100</pubDate>
+      
+      <guid>https://ascrivins.github.io/posts/tryhackme/simplectf/</guid>
+      <description>A beginner level CTF.</description>
+    </item>
+    
+  </channel>
+</rss>

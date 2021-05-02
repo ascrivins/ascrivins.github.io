@@ -6,7 +6,16 @@
     <description>Recent content in dirbuster on ascrivins:blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Sun, 25 Apr 2021 15:54:08 +0100</lastBuildDate><atom:link href="https://ascrivins.github.io/tags/dirbuster/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 27 Apr 2021 20:29:11 +0100</lastBuildDate><atom:link href="https://ascrivins.github.io/tags/dirbuster/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[TryHackMe] Simple CTF - Walkthrough</title>
+      <link>https://ascrivins.github.io/posts/tryhackme/simplectf/</link>
+      <pubDate>Tue, 27 Apr 2021 20:29:11 +0100</pubDate>
+      
+      <guid>https://ascrivins.github.io/posts/tryhackme/simplectf/</guid>
+      <description>A beginner level CTF.</description>
+    </item>
+    
     <item>
       <title>[TryHackMe] LazyAdmin - Writeup</title>
       <link>https://ascrivins.github.io/posts/tryhackme/lazyadmin/</link>
