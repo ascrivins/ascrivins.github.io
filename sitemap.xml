@@ -2,46 +2,52 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://ascrivins.github.io/posts/tryhackme/simplectf/</loc>
-    <lastmod>2021-04-27T20:29:11+01:00</lastmod>
+    <loc>https://ascrivins.github.io/posts/tryhackme/charliechocolatefactory/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/categories/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/tags/dirbuster/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/tags/nmap/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/posts/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/tags/privilege-escalation/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/tags/ssh/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/tags/stenography/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/tags/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/categories/tryhackme/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/posts/tryhackme/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/tags/walkthrough/</loc>
+    <lastmod>2021-05-11T20:19:10+01:00</lastmod>
+  </url><url>
+    <loc>https://ascrivins.github.io/posts/tryhackme/simplectf/</loc>
     <lastmod>2021-04-27T20:29:11+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/tags/burp-suite/</loc>
     <lastmod>2021-04-27T20:29:11+01:00</lastmod>
   </url><url>
-    <loc>https://ascrivins.github.io/categories/</loc>
-    <lastmod>2021-04-27T20:29:11+01:00</lastmod>
-  </url><url>
-    <loc>https://ascrivins.github.io/tags/dirbuster/</loc>
-    <lastmod>2021-04-27T20:29:11+01:00</lastmod>
-  </url><url>
     <loc>https://ascrivins.github.io/tags/ftp/</loc>
-    <lastmod>2021-04-27T20:29:11+01:00</lastmod>
-  </url><url>
-    <loc>https://ascrivins.github.io/tags/nmap/</loc>
-    <lastmod>2021-04-27T20:29:11+01:00</lastmod>
-  </url><url>
-    <loc>https://ascrivins.github.io/posts/</loc>
-    <lastmod>2021-04-27T20:29:11+01:00</lastmod>
-  </url><url>
-    <loc>https://ascrivins.github.io/tags/privilege-escalation/</loc>
-    <lastmod>2021-04-27T20:29:11+01:00</lastmod>
-  </url><url>
-    <loc>https://ascrivins.github.io/tags/ssh/</loc>
-    <lastmod>2021-04-27T20:29:11+01:00</lastmod>
-  </url><url>
-    <loc>https://ascrivins.github.io/tags/</loc>
-    <lastmod>2021-04-27T20:29:11+01:00</lastmod>
-  </url><url>
-    <loc>https://ascrivins.github.io/categories/tryhackme/</loc>
-    <lastmod>2021-04-27T20:29:11+01:00</lastmod>
-  </url><url>
-    <loc>https://ascrivins.github.io/posts/tryhackme/</loc>
-    <lastmod>2021-04-27T20:29:11+01:00</lastmod>
-  </url><url>
-    <loc>https://ascrivins.github.io/tags/walkthrough/</loc>
     <lastmod>2021-04-27T20:29:11+01:00</lastmod>
   </url><url>
     <loc>https://ascrivins.github.io/posts/tryhackme/inclusion/</loc>

